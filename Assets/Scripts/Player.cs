@@ -11,16 +11,31 @@ public class Player : MonoBehaviour
     private float _xMinBound = -12f;
     private float _yMinBound = -3.8f;
 
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private float _fireRate = 0.5f;
+    private float _canFire = -1f;
+
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(0, 0, 0);
+        transform.position = new Vector3(0f, 0f, 0f);
     }
 
     // Update is called once per frame
     void Update()
     {
         CalculateMovement();
+
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        {
+            ShootLaser();
+        }
+    }
+
+    private void ShootLaser()
+    {
+        _canFire = Time.time + _fireRate;
+        Instantiate(_laserPrefab, transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
     }
 
     private void CalculateMovement()
