@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private int _lives = 3;
+
     [SerializeField] private float _speed = 3.5f;
 
     private float _xMaxBound = 12f;
@@ -57,5 +59,15 @@ public class Player : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, _yMinBound, 0f), 0f);
 
+    }
+
+    public void Damage()
+    {
+        _lives--;
+
+        if(_lives <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
