@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3949547173387730050}
   - component: {fileID: 4430055757869646585}
   - component: {fileID: 9126838029563061970}
-  - component: {fileID: 4518215068290392341}
+  - component: {fileID: -1593166851096284977}
   m_Layer: 0
   m_Name: Laser
   m_TagString: Laser
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _laserSpeed: 8
---- !u!54 &4518215068290392341
+--- !u!54 &-1593166851096284977
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

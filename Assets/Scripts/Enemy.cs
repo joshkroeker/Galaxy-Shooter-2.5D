@@ -23,12 +23,12 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent<Laser>(out Laser laser))
+        if (other.TryGetComponent<Laser>(out Laser laser))
         {
             Destroy(laser.gameObject);
             Destroy(gameObject);
         }
-        else if(other.TryGetComponent<Player>(out Player player))
+        else if (other.TryGetComponent<Player>(out Player player))
         {
             player.Damage();
             Destroy(gameObject);
