@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
     private void ShootLaser()
     {
         _canFire = Time.time + _fireRate;
-        Instantiate(_laserPrefab, transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+        Instantiate(_laserPrefab, transform.position + new Vector3(0f, 1.05f, 0f), Quaternion.identity);
     }
 
     private void CalculateMovement()
