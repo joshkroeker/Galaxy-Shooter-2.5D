@@ -33,6 +33,6 @@ public class SpawnManager : MonoBehaviour
     private Vector3 SetRandomPosition()
     {
         float randomX = Random.Range(-8f, 8f);
-        return new Vector3(randomX, 7f, transform.position.z);
+        return new Vector3(randomX, 7f, 0f);
     }
 }

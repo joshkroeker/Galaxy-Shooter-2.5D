@@ -9,9 +9,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float _speed = 3.5f;
 
-    private float _xMaxBound = 12f;
-    private float _xMinBound = -12f;
-    private float _yMinBound = -3.8f;
+    [SerializeField] private float _xMaxBound = 12f;
+    [SerializeField] private float _xMinBound = -12f;
+    [SerializeField] private float _yMinBound = -3.8f;
 
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private float _fireRate = 0.5f;
@@ -19,13 +19,17 @@ public class Player : MonoBehaviour
 
     private SpawnManager _spawnManager;
 
+    [SerializeField] private GameObject _tripleShotPrefab;
+    [SerializeField] private bool _isTripleShotActive = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(0f, 0f, 0f);
-        _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+       // transform.position = new Vector3(0f, 0f, 0f);
+        _spawnManager = FindObjectOfType<SpawnManager>();
 
-        if (_spawnManager == null) { Debug.LogError("The spawn manager is NULL"); }
+        if (_spawnManager == null) 
+            Debug.LogError("The spawn manager is NULL");
     }
 
     // Update is called once per frame
@@ -39,17 +43,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ShootLaser()
-    {
-        _canFire = Time.time + _fireRate;
-        Instantiate(_laserPrefab, transform.position + new Vector3(0f, 1.05f, 0f), Quaternion.identity);
-    }
-
     private void CalculateMovement()
     {
         // get directional input from player and convert it to a Vector3(horizontalInput, verticalInput, 0f)
-        Func<float, float, Vector3> direction = (float horizontalInput, float verticalInput)
-            => new Vector3(horizontalInput, verticalInput, 0f);
+        Func<float, float, Vector3> direction = (float horizontalInput, float verticalInput) => new Vector3(horizontalInput, verticalInput, 0f);
 
         transform.Translate(direction(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * _speed * Time.deltaTime);
 
@@ -66,6 +63,20 @@ public class Player : MonoBehaviour
 
     }
 
+    private void ShootLaser()
+    {
+        _canFire = Time.time + _fireRate;
+
+        if (_isTripleShotActive)
+        {
+            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(_laserPrefab, transform.position + new Vector3(0f, 1.05f, 0f), Quaternion.identity);
+        }
+    }
+
     public void Damage()
     {
         _lives--;
@@ -75,5 +86,17 @@ public class Player : MonoBehaviour
             _spawnManager.OnPlayerDeath();
             Destroy(gameObject);
         }
+    }
+
+    public void ActivateTripleShot()
+    {
+        _isTripleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+        _isTripleShotActive = false;
     }
 }
