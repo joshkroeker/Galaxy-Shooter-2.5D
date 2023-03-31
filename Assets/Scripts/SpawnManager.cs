@@ -7,21 +7,35 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] GameObject _enemyContainer;
     [SerializeField] float _enemySpawnDelay = 3.0f;
+    [SerializeField] GameObject[] _powerups;
 
     private bool _stopSpawning = false;
 
     private void Start()
     {
-        StartCoroutine(SpawnRoutine());
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnPowerupRoutine());
     }
 
-    IEnumerator SpawnRoutine()
+    IEnumerator SpawnEnemyRoutine()
     {
         while (!_stopSpawning)
         {
             GameObject enemy = Instantiate(_enemyPrefab, SetRandomPosition(), Quaternion.identity);
             enemy.transform.parent = _enemyContainer.transform;
             yield return new WaitForSeconds(_enemySpawnDelay);
+        }
+    }
+
+    IEnumerator SpawnPowerupRoutine()
+    {
+        while (!_stopSpawning)
+        {
+            int randomPowerup = Random.Range(0, _powerups.Length);
+            Instantiate(_powerups[randomPowerup], SetRandomPosition(), Quaternion.identity);
+
+            int randomWait = Random.Range(3, 8);
+            yield return new WaitForSeconds(randomWait);
         }
     }
 

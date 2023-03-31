@@ -6,8 +6,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int _lives = 3;
+    [SerializeField] private bool _isShieldActive = false;
 
     [SerializeField] private float _speed = 3.5f;
+    [SerializeField] private float _speedBoosted = 8.5f;
+    [SerializeField] private bool _isSpeedBoostActive = false;
 
     [SerializeField] private float _xMaxBound = 12f;
     [SerializeField] private float _xMinBound = -12f;
@@ -22,7 +25,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private bool _isTripleShotActive = false;
 
-    // Start is called before the first frame update
+    [SerializeField] private GameObject _shieldVisualizer;
+
     void Start()
     {
        // transform.position = new Vector3(0f, 0f, 0f);
@@ -32,7 +36,6 @@ public class Player : MonoBehaviour
             Debug.LogError("The spawn manager is NULL");
     }
 
-    // Update is called once per frame
     void Update()
     {
         CalculateMovement();
@@ -48,7 +51,8 @@ public class Player : MonoBehaviour
         // get directional input from player and convert it to a Vector3(horizontalInput, verticalInput, 0f)
         Func<float, float, Vector3> direction = (float horizontalInput, float verticalInput) => new Vector3(horizontalInput, verticalInput, 0f);
 
-        transform.Translate(direction(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * _speed * Time.deltaTime);
+        float speed = !_isSpeedBoostActive ? _speed : _speedBoosted;
+        transform.Translate(direction(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * speed * Time.deltaTime);
 
         if (transform.position.x > _xMaxBound)
         {
@@ -79,6 +83,13 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+        if (_isShieldActive)
+        {
+            _isShieldActive = false;
+            _shieldVisualizer.SetActive(false);
+            return;
+        }
+
         _lives--;
 
         if(_lives <= 0)
@@ -98,5 +109,23 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         _isTripleShotActive = false;
+    }
+
+    public void ActivateSpeedBoost()
+    {
+        _isSpeedBoostActive = true;
+        StartCoroutine(SpeedBoostPowerDownRoutine());
+    }
+
+    IEnumerator SpeedBoostPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+        _isSpeedBoostActive = false;
+    }
+
+    public void ActivateShields()
+    {
+        _isShieldActive = true;
+        _shieldVisualizer.SetActive(true);
     }
 }
