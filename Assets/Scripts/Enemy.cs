@@ -9,6 +9,15 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _xScreenMinBound = -11f;
     [SerializeField] private float _xScreenMaxBound = 11f;
 
+    [SerializeField] private int pointsToAdd = 10;
+
+    private Player _player;
+
+    private void Start()
+    {
+        _player = FindObjectOfType<Player>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -26,6 +35,10 @@ public class Enemy : MonoBehaviour
         if (other.TryGetComponent<Laser>(out Laser laser))
         {
             Destroy(laser.gameObject);
+            if(_player != null)
+            {
+                _player.AddScore(pointsToAdd);
+            }
             Destroy(gameObject);
         }
         else if (other.TryGetComponent<Player>(out Player player))
