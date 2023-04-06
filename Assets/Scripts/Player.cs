@@ -27,6 +27,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private GameObject _shieldVisualizer;
 
+    [SerializeField] private GameObject[] _engines;
+    private int _lastEngineDamaged;
+
     private UIManager _uiManager;
     [SerializeField] private int _score = 0;
 
@@ -96,6 +99,25 @@ public class Player : MonoBehaviour
         }
 
         _lives--;
+
+        if (_lives == 2)
+        {
+            int engine = UnityEngine.Random.Range(0, 2);
+            _engines[engine].SetActive(true);
+            _lastEngineDamaged = engine;
+        }
+        else if (_lives == 1)
+        {
+            if (_lastEngineDamaged == 0)
+            {
+                _engines[1].SetActive(true);
+            }
+            else if (_lastEngineDamaged == 1)
+            {
+                _engines[0].SetActive(true);
+            }
+        }
+
         _uiManager.UpdateLives(_lives);
 
         if(_lives <= 0)

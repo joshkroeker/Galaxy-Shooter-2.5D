@@ -12,10 +12,26 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int pointsToAdd = 10;
 
     private Player _player;
+    private Animator _anim;
+    [SerializeField] float animationTime; // length of destroy anim
+
+    private bool _canStillCollide = true;
 
     private void Start()
     {
         _player = FindObjectOfType<Player>();
+
+        if(_player == null)
+        {
+            Debug.LogError("The Player is NULL");
+        }
+
+        _anim = GetComponent<Animator>();
+
+        if(_anim == null)
+        {
+            Debug.LogError("The Animator is NULL");
+        }
     }
 
     // Update is called once per frame
@@ -32,19 +48,27 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<Laser>(out Laser laser))
+        if (other.TryGetComponent<Laser>(out Laser laser) && _canStillCollide)
         {
             Destroy(laser.gameObject);
-            if(_player != null)
-            {
+            if (_player != null)
+            {               
                 _player.AddScore(pointsToAdd);
             }
-            Destroy(gameObject);
+            InitiateEnemyDeathSequence();
         }
-        else if (other.TryGetComponent<Player>(out Player player))
+        else if (other.TryGetComponent<Player>(out Player player) && _canStillCollide)
         {
             player.Damage();
-            Destroy(gameObject);
+            InitiateEnemyDeathSequence();
         }
+    }
+
+    private void InitiateEnemyDeathSequence()
+    {
+        _canStillCollide = false;
+        _speed = 0f;
+        _anim.SetTrigger("OnEnemyDeath");
+        Destroy(gameObject, animationTime);
     }
 }
