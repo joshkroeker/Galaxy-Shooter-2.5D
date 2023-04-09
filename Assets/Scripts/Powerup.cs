@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Powerup : MonoBehaviour
 {
+    [SerializeField] AudioClip _powerupClip;
     [SerializeField] private float _speed = 3f;
     [SerializeField] private int _powerupID; // 0 = triple shot | 1 = speed | 2 = shields
 
@@ -23,6 +24,9 @@ public class Powerup : MonoBehaviour
         if(other.tag == "Player")
         {
             Player player = other.GetComponent<Player>();
+
+            AudioSource.PlayClipAtPoint(_powerupClip, transform.position);
+
             if(player != null)
             {
                 switch (_powerupID)

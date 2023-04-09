@@ -17,6 +17,14 @@ public class Enemy : MonoBehaviour
 
     private bool _canStillCollide = true;
 
+    [SerializeField] GameObject _explosionPrefab;
+
+    [SerializeField] GameObject _laserPrefab;
+    [SerializeField] AudioClip _fireLaserClip;
+
+    private float _fireRate = 3.0f;
+    private float _canFire = -1f;
+
     private void Start()
     {
         _player = FindObjectOfType<Player>();
@@ -37,9 +45,27 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CalculateMovement();
+
+        if (Time.time > _canFire)
+        {
+            _fireRate = Random.Range(3f, 7f);
+            _canFire = Time.time + _fireRate;
+            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            AudioSource.PlayClipAtPoint(_fireLaserClip, transform.position);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].SetEnemyLaser();
+            }
+        }
+    }
+
+    void CalculateMovement()
+    {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        if(transform.position.y <= -5.5f)
+        if (transform.position.y <= -5.5f)
         {
             float randomX = Random.Range(_xScreenMinBound, _xScreenMaxBound);
             transform.position = new Vector3(randomX, 7f, transform.position.z);
@@ -66,9 +92,12 @@ public class Enemy : MonoBehaviour
 
     private void InitiateEnemyDeathSequence()
     {
+        Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+
         _canStillCollide = false;
         _speed = 0f;
         _anim.SetTrigger("OnEnemyDeath");
+
         Destroy(gameObject, animationTime);
     }
 }

@@ -6,7 +6,6 @@ public class Asteroid : MonoBehaviour
 {
     [SerializeField] GameObject _explosionPrefab;
 
-    [SerializeField] float _moveSpeed = 3f;
     [SerializeField] float _rotateSpeed = 3f;
 
     private SpawnManager _spawnManager;
@@ -31,6 +30,8 @@ public class Asteroid : MonoBehaviour
     {
         if(other.tag == "Laser")
         {
+            CircleCollider2D collider = GetComponent<CircleCollider2D>();
+            collider.enabled = false;
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
             _spawnManager.StartSpawning();

@@ -15,6 +15,12 @@ public class GameManager : MonoBehaviour
             _isGameOver = false;
             SceneManager.LoadScene("Game");
         }
+
+        // two ways of reading player input that the Escape button has been pressed
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     public void GameOver()

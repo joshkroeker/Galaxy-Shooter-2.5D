@@ -5,43 +5,51 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Health-related Variables")]
     [SerializeField] private int _lives = 3;
-    [SerializeField] private bool _isShieldActive = false;
+    [SerializeField] private GameObject[] _engines;
+    private int _lastEngineDamaged;
+    [SerializeField] private GameObject _explosionPrefab;
 
+    [Header("Power-up Related Variables")]
     [SerializeField] private float _speed = 3.5f;
     [SerializeField] private float _speedBoosted = 8.5f;
     [SerializeField] private bool _isSpeedBoostActive = false;
+    [SerializeField] private bool _isShieldActive = false;
+    [SerializeField] private GameObject _shieldVisualizer;
+    [SerializeField] private GameObject _tripleShotPrefab;
+    [SerializeField] private bool _isTripleShotActive = false;
 
+    [Header("Ship Movement & Firing Variables")]
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private float _fireRate = 0.5f;
+    private float _canFire = -1f;
+    [SerializeField] AudioClip _fireLaserClip;
     [SerializeField] private float _xMaxBound = 12f;
     [SerializeField] private float _xMinBound = -12f;
     [SerializeField] private float _yMinBound = -3.8f;
 
-    [SerializeField] private GameObject _laserPrefab;
-    [SerializeField] private float _fireRate = 0.5f;
-    private float _canFire = -1f;
-
+    [Header("Miscellaneous Variables & Cached References")]
     private SpawnManager _spawnManager;
-
-    [SerializeField] private GameObject _tripleShotPrefab;
-    [SerializeField] private bool _isTripleShotActive = false;
-
-    [SerializeField] private GameObject _shieldVisualizer;
-
-    [SerializeField] private GameObject[] _engines;
-    private int _lastEngineDamaged;
-
     private UIManager _uiManager;
+    private AudioSource _audioSource;
     [SerializeField] private int _score = 0;
+
 
     void Start()
     {
         _uiManager = FindObjectOfType<UIManager>();
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _audioSource = GetComponent<AudioSource>();
 
         if (_uiManager == null)
             Debug.LogError("The UI Manager is NULL");
         if (_spawnManager == null) 
             Debug.LogError("The spawn manager is NULL");
+        if (_audioSource == null)
+            Debug.LogError("The AudioSource on the Player is NULL");
+        else
+            _audioSource.clip = _fireLaserClip;
     }
 
     void Update()
@@ -87,6 +95,8 @@ public class Player : MonoBehaviour
         {
             Instantiate(_laserPrefab, transform.position + new Vector3(0f, 1.05f, 0f), Quaternion.identity);
         }
+
+        _audioSource.Play();
     }
 
     public void Damage()
@@ -123,6 +133,7 @@ public class Player : MonoBehaviour
         if(_lives <= 0)
         {
             _spawnManager.OnPlayerDeath();
+            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
@@ -162,4 +173,5 @@ public class Player : MonoBehaviour
         _score += scoreToAdd;
         _uiManager.AddScoreToText(_score);
     }
+
 }
