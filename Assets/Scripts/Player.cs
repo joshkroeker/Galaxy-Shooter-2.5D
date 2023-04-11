@@ -12,8 +12,9 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _explosionPrefab;
 
     [Header("Power-up Related Variables")]
-    [SerializeField] private float _speed = 3.5f;
-    [SerializeField] private float _speedBoosted = 8.5f;
+    [SerializeField] private float _speed = 5f;
+    [SerializeField] private float _speedBoosted = 10f;
+    [SerializeField] private float _thrusterSpeed = 8f;
     [SerializeField] private bool _isSpeedBoostActive = false;
     [SerializeField] private bool _isShieldActive = false;
     [SerializeField] private GameObject _shieldVisualizer;
@@ -67,7 +68,7 @@ public class Player : MonoBehaviour
         // get directional input from player and convert it to a Vector3(horizontalInput, verticalInput, 0f)
         Func<float, float, Vector3> direction = (float horizontalInput, float verticalInput) => new Vector3(horizontalInput, verticalInput, 0f);
 
-        float speed = !_isSpeedBoostActive ? _speed : _speedBoosted;
+        float speed = CalculateSpeed();
         transform.Translate(direction(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * speed * Time.deltaTime);
 
         if (transform.position.x > _xMaxBound)
@@ -82,6 +83,33 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, _yMinBound, 0f), 0f);
 
     }
+
+    private float CalculateSpeed()
+    {
+        if(!_isSpeedBoostActive)
+        {
+            if(Input.GetKey(KeyCode.LeftShift))
+            {
+                return _thrusterSpeed;
+            }
+            else if(Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                return _speed;
+            }
+            else
+            {
+                return _speed;
+            }
+
+        }
+        else if(_isSpeedBoostActive)
+        {
+            return _speedBoosted;
+        }
+
+        return -1f;
+    }
+
 
     private void ShootLaser()
     {

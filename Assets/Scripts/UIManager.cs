@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     { 
         if(_gameManager == null) { _gameManager = FindObjectOfType<GameManager>(); }
 
-        _scoreText.text = "Score: " + 0.ToString();
+        _scoreText.text = "Score: 0";
         _gameOverTextObject.SetActive(false);
         _pressRTORestartObj.SetActive(false);
     }
@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
     {
         _livesImg.sprite = _livesSprites[currentLives];
 
-        if (currentLives == 0)
+        if (currentLives <= 0)
         {
             GameOverSequence();
         }

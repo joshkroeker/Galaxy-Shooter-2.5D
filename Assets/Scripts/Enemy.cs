@@ -74,7 +74,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<Laser>(out Laser laser) && _canStillCollide)
+        if (_canStillCollide && other.TryGetComponent<Laser>(out Laser laser))
         {
             Destroy(laser.gameObject);
             if (_player != null)
@@ -83,7 +83,7 @@ public class Enemy : MonoBehaviour
             }
             InitiateEnemyDeathSequence();
         }
-        else if (other.TryGetComponent<Player>(out Player player) && _canStillCollide)
+        else if (_canStillCollide && other.TryGetComponent<Player>(out Player player))
         {
             player.Damage();
             InitiateEnemyDeathSequence();

@@ -180,7 +180,8 @@ MonoBehaviour:
   - {fileID: 1700095320}
   _explosionPrefab: {fileID: 1248490044564488335, guid: dac391575840a644fad3e0910447ba64, type: 3}
   _speed: 5
-  _speedBoosted: 8.5
+  _speedBoosted: 10
+  _thrusterSpeed: 8
   _isSpeedBoostActive: 0
   _isShieldActive: 0
   _shieldVisualizer: {fileID: 916190584}
