@@ -183,6 +183,12 @@ MonoBehaviour:
   _speedBoosted: 10
   _thrusterSpeed: 8
   _isSpeedBoostActive: 0
+  _shieldStatusColors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 0.6862745}
+  - {r: 1, g: 1, b: 1, a: 0.36078432}
+  _shieldStatus: 0
+  _shieldSR: {fileID: 916190586}
   _isShieldActive: 0
   _shieldVisualizer: {fileID: 916190584}
   _tripleShotPrefab: {fileID: 8047257831423379138, guid: fd48c098a756e8b45805abe74d3b90c6, type: 3}
@@ -1273,7 +1279,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1537671428
 GameObject:
@@ -1977,7 +1983,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8980490391749787913, guid: ba614adb338a770478a4f6618273f1cf, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8980490391749787913, guid: ba614adb338a770478a4f6618273f1cf, type: 3}
       propertyPath: m_LocalPosition.x

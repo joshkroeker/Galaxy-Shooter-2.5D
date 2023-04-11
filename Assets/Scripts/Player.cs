@@ -16,6 +16,11 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speedBoosted = 10f;
     [SerializeField] private float _thrusterSpeed = 8f;
     [SerializeField] private bool _isSpeedBoostActive = false;
+
+    [SerializeField] private Color[] _shieldStatusColors;
+    [SerializeField] private int _shieldStatus = 0;
+    [SerializeField] private SpriteRenderer _shieldSR;
+
     [SerializeField] private bool _isShieldActive = false;
     [SerializeField] private GameObject _shieldVisualizer;
     [SerializeField] private GameObject _tripleShotPrefab;
@@ -35,7 +40,6 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     private AudioSource _audioSource;
     [SerializeField] private int _score = 0;
-
 
     void Start()
     {
@@ -110,7 +114,6 @@ public class Player : MonoBehaviour
         return -1f;
     }
 
-
     private void ShootLaser()
     {
         _canFire = Time.time + _fireRate;
@@ -129,10 +132,9 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (_isShieldActive)
+        if(_isShieldActive)
         {
-            _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);
+            DamageShield();
             return;
         }
 
@@ -163,6 +165,31 @@ public class Player : MonoBehaviour
             _spawnManager.OnPlayerDeath();
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
+        }
+    }
+
+    private void DamageShield()
+    {
+        // if our shield hasn't been hit three times
+        if(_shieldStatus <= 2)
+        {
+            // indicate shield has been hit and our index therefore has gone up one
+            _shieldStatus++;
+
+            //if we haven't reached the max limit, change the color of the shield sprite
+            if(_shieldStatus < 3)
+            {
+                _shieldSR.color = _shieldStatusColors[_shieldStatus];
+            }
+        }
+
+        // if our shield has reached it's last hit, deactivate it
+        if(_shieldStatus >= 3)
+        {
+            _shieldStatus = 0;
+            _isShieldActive = false;
+            _shieldVisualizer.SetActive(false);
+            _shieldSR.color = _shieldStatusColors[_shieldStatus];
         }
     }
 
