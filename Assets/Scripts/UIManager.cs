@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Sprite[] _livesSprites;
     [SerializeField] private GameObject _gameOverTextObject;
     [SerializeField] private GameObject _pressRTORestartObj;
+    [SerializeField] private Text _ammoText;
 
     [SerializeField] private float _flickerDelay = 0.5f;
 
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: 0";
         _gameOverTextObject.SetActive(false);
         _pressRTORestartObj.SetActive(false);
+        _ammoText.text = "Ammo: 15";
     }
 
     public void AddScoreToText(int playerScore)
@@ -33,7 +35,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLives(int currentLives)
     {
-        _livesImg.sprite = _livesSprites[currentLives];
+        if(currentLives > 0)
+            _livesImg.sprite = _livesSprites[currentLives];
 
         if (currentLives <= 0)
         {
@@ -59,5 +62,10 @@ public class UIManager : MonoBehaviour
             _gameOverTextObject.SetActive(true);
             yield return new WaitForSeconds(_flickerDelay);
         }
+    }
+
+    public void UpdateAmmo(int ammo)
+    {
+        _ammoText.text = "Ammo: " + ammo.ToString();
     }
 }

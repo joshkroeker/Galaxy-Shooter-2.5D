@@ -16,11 +16,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speedBoosted = 10f;
     [SerializeField] private float _thrusterSpeed = 8f;
     [SerializeField] private bool _isSpeedBoostActive = false;
-
     [SerializeField] private Color[] _shieldStatusColors;
     [SerializeField] private int _shieldStatus = 0;
     [SerializeField] private SpriteRenderer _shieldSR;
-
     [SerializeField] private bool _isShieldActive = false;
     [SerializeField] private GameObject _shieldVisualizer;
     [SerializeField] private GameObject _tripleShotPrefab;
@@ -34,6 +32,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _xMaxBound = 12f;
     [SerializeField] private float _xMinBound = -12f;
     [SerializeField] private float _yMinBound = -3.8f;
+    [SerializeField] private int _ammo = 15;
 
     [Header("Miscellaneous Variables & Cached References")]
     private SpawnManager _spawnManager;
@@ -116,6 +115,14 @@ public class Player : MonoBehaviour
 
     private void ShootLaser()
     {
+        if(_ammo <= 0)
+        {
+            return;
+        }
+
+        _ammo--;
+        _uiManager.UpdateAmmo(_ammo);
+
         _canFire = Time.time + _fireRate;
 
         if (_isTripleShotActive)
@@ -227,6 +234,12 @@ public class Player : MonoBehaviour
     {
         _score += scoreToAdd;
         _uiManager.AddScoreToText(_score);
+    }
+
+    public void ReplenishAmmo()
+    {
+        _ammo = 15;
+        _uiManager.UpdateAmmo(_ammo);
     }
 
 }
