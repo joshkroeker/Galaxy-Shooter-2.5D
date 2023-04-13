@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     private Animator _anim;
     [SerializeField] float animationTime; // length of destroy anim
 
-    private bool _canStillCollide = true;
+    private bool _isAlive = true;
 
     [SerializeField] GameObject _explosionPrefab;
 
@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
     {
         CalculateMovement();
 
-        if (Time.time > _canFire)
+        if (_isAlive && Time.time > _canFire)
         {
             _fireRate = Random.Range(3f, 7f);
             _canFire = Time.time + _fireRate;
@@ -74,7 +74,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (_canStillCollide && other.TryGetComponent<Laser>(out Laser laser))
+        if (_isAlive && other.TryGetComponent<Laser>(out Laser laser))
         {
             Destroy(laser.gameObject);
             if (_player != null)
@@ -83,7 +83,7 @@ public class Enemy : MonoBehaviour
             }
             InitiateEnemyDeathSequence();
         }
-        else if (_canStillCollide && other.TryGetComponent<Player>(out Player player))
+        else if (_isAlive && other.TryGetComponent<Player>(out Player player))
         {
             player.Damage();
             InitiateEnemyDeathSequence();
@@ -94,7 +94,7 @@ public class Enemy : MonoBehaviour
     {
         Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
 
-        _canStillCollide = false;
+        _isAlive = false;
         _speed = 0f;
         _anim.SetTrigger("OnEnemyDeath");
 

@@ -242,4 +242,21 @@ public class Player : MonoBehaviour
         _uiManager.UpdateAmmo(_ammo);
     }
 
+    public void ReplenishHealth()
+    {
+        _lives++;
+        _uiManager.UpdateLives(_lives);
+        for (int i = 0; i < _engines.Length; i++)
+        {
+            if (_engines[0].gameObject.activeSelf == true)
+            {
+                _engines[0].gameObject.SetActive(false);
+                break;
+            }
+            else if(_engines[1].gameObject.activeSelf == true)
+            {
+                _engines[1].gameObject.SetActive(false);
+            }
+        }
+    }
 }
