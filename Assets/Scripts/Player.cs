@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _shieldVisualizer;
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private bool _isTripleShotActive = false;
+    //[SerializeField] private bool _isWideSweepActive = false;
 
     [Header("Ship Movement & Firing Variables")]
     [SerializeField] private GameObject _laserPrefab;
@@ -33,6 +34,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _xMinBound = -12f;
     [SerializeField] private float _yMinBound = -3.8f;
     [SerializeField] private int _ammo = 15;
+    [SerializeField] private bool _isWideShotActive = false;
+    [SerializeField] private GameObject _wideShotPrefab;
 
     [Header("Miscellaneous Variables & Cached References")]
     private SpawnManager _spawnManager;
@@ -125,7 +128,11 @@ public class Player : MonoBehaviour
 
         _canFire = Time.time + _fireRate;
 
-        if (_isTripleShotActive)
+        if(_isWideShotActive)
+        {
+            Instantiate(_wideShotPrefab, transform.position, Quaternion.identity);
+        }
+        else if (_isTripleShotActive)
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
         }
@@ -259,4 +266,17 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    public void ActivateWideSweep()
+    {
+        _isWideShotActive = true;
+        StartCoroutine(WideSweepPowerDown());
+    }
+    
+    IEnumerator WideSweepPowerDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _isWideShotActive = false;
+    }
+
 }

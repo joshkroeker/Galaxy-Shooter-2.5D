@@ -200,6 +200,8 @@ MonoBehaviour:
   _xMinBound: -12
   _yMinBound: -3.8
   _ammo: 15
+  _isWideShotActive: 0
+  _wideShotPrefab: {fileID: 5891589923443426357, guid: 6082c3d65a3e8564f92f7b601e7407a9, type: 3}
   _score: 0
 --- !u!61 &112693418
 BoxCollider2D:
@@ -995,6 +997,7 @@ MonoBehaviour:
   - {fileID: 5855690865393437780, guid: 8c3750ab3abfea94587fb9f86d1d03c4, type: 3}
   - {fileID: 8732503296425991173, guid: dc6c9b97fd94f854999e388296e8e2e0, type: 3}
   - {fileID: 3379328613295734854, guid: 872b8cff1a822134fbdd7bd829bc184a, type: 3}
+  _wideSweepPowerup: {fileID: 8662898065698079849, guid: 5168d93fe5540d64abda3911fff35d8c, type: 3}
 --- !u!4 &828411471
 Transform:
   m_ObjectHideFlags: 0

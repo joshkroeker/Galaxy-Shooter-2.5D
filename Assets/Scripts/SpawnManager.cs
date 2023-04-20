@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _enemyContainer;
     [SerializeField] float _enemySpawnDelay = 3.0f;
     [SerializeField] GameObject[] _powerups;
+    [SerializeField] GameObject _wideSweepPowerup;
 
     private bool _stopSpawning = false;
 
@@ -15,6 +16,7 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
+        StartCoroutine(SpawnWideSweepRoutine());
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -39,6 +41,18 @@ public class SpawnManager : MonoBehaviour
             Instantiate(_powerups[randomPowerup], SetRandomPosition(), Quaternion.identity);
 
             int randomWait = Random.Range(4, 8);
+            yield return new WaitForSeconds(randomWait);
+        }
+    }
+
+    IEnumerator SpawnWideSweepRoutine()
+    {
+        yield return new WaitForSeconds(10f);
+
+        while (!_stopSpawning)
+        {
+            Instantiate(_wideSweepPowerup, SetRandomPosition(), Quaternion.identity);
+            int randomWait = Random.Range(10, 15);
             yield return new WaitForSeconds(randomWait);
         }
     }

@@ -46,6 +46,9 @@ public class Powerup : MonoBehaviour
                     case 4:
                         player.ReplenishHealth();
                         break;
+                    case 5:
+                        player.ActivateWideSweep();
+                        break;
                     default:
                         Debug.Log("Default Value");
                         break;
