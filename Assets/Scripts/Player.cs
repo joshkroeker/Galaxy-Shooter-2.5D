@@ -23,7 +23,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _shieldVisualizer;
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private bool _isTripleShotActive = false;
-    //[SerializeField] private bool _isWideSweepActive = false;
+    [SerializeField] private bool _isWideShotActive = false;
+    [SerializeField] private GameObject _wideShotPrefab;
 
     [Header("Ship Movement & Firing Variables")]
     [SerializeField] private GameObject _laserPrefab;
@@ -34,8 +35,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float _xMinBound = -12f;
     [SerializeField] private float _yMinBound = -3.8f;
     [SerializeField] private int _ammo = 15;
-    [SerializeField] private bool _isWideShotActive = false;
-    [SerializeField] private GameObject _wideShotPrefab;
+    [SerializeField] private float _maxThrusterFuel = 15f;
+    [SerializeField] private float _thrusterFuel;
+    [SerializeField] private bool _canRefuel = false;
 
     [Header("Miscellaneous Variables & Cached References")]
     private SpawnManager _spawnManager;
@@ -57,6 +59,8 @@ public class Player : MonoBehaviour
             Debug.LogError("The AudioSource on the Player is NULL");
         else
             _audioSource.clip = _fireLaserClip;
+
+        _thrusterFuel = _maxThrusterFuel;
     }
 
     void Update()
@@ -66,6 +70,21 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             ShootLaser();
+        }
+
+        // check if we are not holding left shift and we can refuel 
+        if(!Input.GetKey(KeyCode.LeftShift) && _canRefuel)
+        {
+            // start refueling every second
+            _thrusterFuel += 1f * Time.deltaTime;
+            // update slider
+            _uiManager.UpdateThrusterFuel(_thrusterFuel);
+
+            if(_thrusterFuel >= _maxThrusterFuel)
+            {
+                _thrusterFuel = _maxThrusterFuel;
+                _canRefuel = false;
+            }
         }
     }
 
@@ -94,12 +113,19 @@ public class Player : MonoBehaviour
     {
         if(!_isSpeedBoostActive)
         {
-            if(Input.GetKey(KeyCode.LeftShift))
+            if(Input.GetKey(KeyCode.LeftShift) && _thrusterFuel > 0)
             {
+                // deplete fuel every second 
+                _thrusterFuel -= 1f * Time.deltaTime;
+                // update slider via comm to ui manager
+                _uiManager.UpdateThrusterFuel(_thrusterFuel);
+
                 return _thrusterSpeed;
             }
             else if(Input.GetKeyUp(KeyCode.LeftShift))
             {
+                // start refueling process via bool 
+                _canRefuel = true;
                 return _speed;
             }
             else

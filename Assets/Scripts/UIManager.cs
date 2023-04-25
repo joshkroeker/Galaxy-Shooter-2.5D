@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _gameOverTextObject;
     [SerializeField] private GameObject _pressRTORestartObj;
     [SerializeField] private Text _ammoText;
+    //reference the slider
+    [SerializeField] private Slider _thrusterSlider;
 
     [SerializeField] private float _flickerDelay = 0.5f;
 
@@ -25,6 +27,7 @@ public class UIManager : MonoBehaviour
         _gameOverTextObject.SetActive(false);
         _pressRTORestartObj.SetActive(false);
         _ammoText.text = "Ammo: 15";
+        _thrusterSlider.value = 100;
     }
 
     public void AddScoreToText(int playerScore)
@@ -67,5 +70,12 @@ public class UIManager : MonoBehaviour
     public void UpdateAmmo(int ammo)
     {
         _ammoText.text = "Ammo: " + ammo.ToString();
+    }
+
+    // update slider method and take fuel amount 
+    // take fuel amount and reflect it in the slider
+    public void UpdateThrusterFuel(float fuelAmount)
+    {
+        _thrusterSlider.value = fuelAmount;
     }
 }
