@@ -202,6 +202,7 @@ MonoBehaviour:
   _xMinBound: -12
   _yMinBound: -3.8
   _ammo: 15
+  _maxThrusterFuel: 15
   _thrusterFuel: 100
   _canRefuel: 0
   _score: 0
@@ -788,6 +789,7 @@ GameObject:
   - component: {fileID: 533284269}
   - component: {fileID: 533284268}
   - component: {fileID: 533284271}
+  - component: {fileID: 533284272}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -921,6 +923,19 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &533284272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533284267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ff69a8c5526024b84f6842c97b88fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _amountToShake: {x: 0.2, y: 0.7, z: 0}
 --- !u!1 &545589353
 GameObject:
   m_ObjectHideFlags: 0

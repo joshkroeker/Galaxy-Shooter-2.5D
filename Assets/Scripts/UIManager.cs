@@ -72,8 +72,6 @@ public class UIManager : MonoBehaviour
         _ammoText.text = "Ammo: " + ammo.ToString();
     }
 
-    // update slider method and take fuel amount 
-    // take fuel amount and reflect it in the slider
     public void UpdateThrusterFuel(float fuelAmount)
     {
         _thrusterSlider.value = fuelAmount;

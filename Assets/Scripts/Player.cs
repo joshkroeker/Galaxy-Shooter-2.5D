@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private AudioSource _audioSource;
+    private CameraShake _camShake;
     [SerializeField] private int _score = 0;
 
     void Start()
@@ -50,7 +51,10 @@ public class Player : MonoBehaviour
         _uiManager = FindObjectOfType<UIManager>();
         _spawnManager = FindObjectOfType<SpawnManager>();
         _audioSource = GetComponent<AudioSource>();
+        _camShake = FindObjectOfType<CameraShake>();
 
+        if (_camShake == null)
+            Debug.LogError("The Camera Shake on the Player reference is NULL");
         if (_uiManager == null)
             Debug.LogError("The UI Manager is NULL");
         if (_spawnManager == null) 
@@ -72,12 +76,9 @@ public class Player : MonoBehaviour
             ShootLaser();
         }
 
-        // check if we are not holding left shift and we can refuel 
         if(!Input.GetKey(KeyCode.LeftShift) && _canRefuel)
         {
-            // start refueling every second
             _thrusterFuel += 1f * Time.deltaTime;
-            // update slider
             _uiManager.UpdateThrusterFuel(_thrusterFuel);
 
             if(_thrusterFuel >= _maxThrusterFuel)
@@ -115,16 +116,13 @@ public class Player : MonoBehaviour
         {
             if(Input.GetKey(KeyCode.LeftShift) && _thrusterFuel > 0)
             {
-                // deplete fuel every second 
                 _thrusterFuel -= 1f * Time.deltaTime;
-                // update slider via comm to ui manager
                 _uiManager.UpdateThrusterFuel(_thrusterFuel);
 
                 return _thrusterSpeed;
             }
             else if(Input.GetKeyUp(KeyCode.LeftShift))
             {
-                // start refueling process via bool 
                 _canRefuel = true;
                 return _speed;
             }
@@ -179,6 +177,7 @@ public class Player : MonoBehaviour
         }
 
         _lives--;
+        _camShake.ShakeCamera();
 
         if (_lives == 2)
         {
@@ -210,20 +209,16 @@ public class Player : MonoBehaviour
 
     private void DamageShield()
     {
-        // if our shield hasn't been hit three times
         if(_shieldStatus <= 2)
         {
-            // indicate shield has been hit and our index therefore has gone up one
             _shieldStatus++;
 
-            //if we haven't reached the max limit, change the color of the shield sprite
             if(_shieldStatus < 3)
             {
                 _shieldSR.color = _shieldStatusColors[_shieldStatus];
             }
         }
 
-        // if our shield has reached it's last hit, deactivate it
         if(_shieldStatus >= 3)
         {
             _shieldStatus = 0;

@@ -47,12 +47,12 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnWideSweepRoutine()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(60f);
 
         while (!_stopSpawning)
         {
             Instantiate(_wideSweepPowerup, SetRandomPosition(), Quaternion.identity);
-            int randomWait = Random.Range(10, 15);
+            int randomWait = Random.Range(20, 30);
             yield return new WaitForSeconds(randomWait);
         }
     }
