@@ -34,12 +34,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float _xMaxBound = 12f;
     [SerializeField] private float _xMinBound = -12f;
     [SerializeField] private float _yMinBound = -3.8f;
-    [SerializeField] private int _ammo = 15;
+    private int _currentAmmo;
+    [SerializeField] private int _maxAmmo = 15;
     [SerializeField] private float _maxThrusterFuel = 15f;
     [SerializeField] private float _thrusterFuel;
     [SerializeField] private bool _canRefuel = false;
 
-    [Header("Miscellaneous Variables & Cached References")]
+    [Header("Miscellaneous Variables & Cached References")] 
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private AudioSource _audioSource;
@@ -65,6 +66,7 @@ public class Player : MonoBehaviour
             _audioSource.clip = _fireLaserClip;
 
         _thrusterFuel = _maxThrusterFuel;
+        _currentAmmo = _maxAmmo;
     }
 
     void Update()
@@ -142,13 +144,13 @@ public class Player : MonoBehaviour
 
     private void ShootLaser()
     {
-        if(_ammo <= 0)
+        if(_currentAmmo <= 0)
         {
             return;
         }
 
-        _ammo--;
-        _uiManager.UpdateAmmo(_ammo);
+        _currentAmmo--;
+        _uiManager.UpdateAmmo(_currentAmmo,_maxAmmo);
 
         _canFire = Time.time + _fireRate;
 
@@ -266,8 +268,8 @@ public class Player : MonoBehaviour
 
     public void ReplenishAmmo()
     {
-        _ammo = 15;
-        _uiManager.UpdateAmmo(_ammo);
+        _currentAmmo = 15;
+        _uiManager.UpdateAmmo(_currentAmmo, _maxAmmo );
     }
 
     public void ReplenishHealth()

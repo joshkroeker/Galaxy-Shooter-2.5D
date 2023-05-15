@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private Text _scoreText;
@@ -12,22 +11,23 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _gameOverTextObject;
     [SerializeField] private GameObject _pressRTORestartObj;
     [SerializeField] private Text _ammoText;
-    //reference the slider
     [SerializeField] private Slider _thrusterSlider;
-
     [SerializeField] private float _flickerDelay = 0.5f;
-
     [SerializeField] private GameManager _gameManager;
 
+    //add a reference to the text object
+    [SerializeField] private Text _waveIncomingText;
+
     private void Start()
-    { 
-        if(_gameManager == null) { _gameManager = FindObjectOfType<GameManager>(); }
+    {
+        if (_gameManager == null) { _gameManager = FindObjectOfType<GameManager>(); }
 
         _scoreText.text = "Score: 0";
         _gameOverTextObject.SetActive(false);
         _pressRTORestartObj.SetActive(false);
-        _ammoText.text = "Ammo: 15";
+        _ammoText.text = "Ammo: 15 / 15";
         _thrusterSlider.value = 100;
+        _waveIncomingText.gameObject.SetActive(false);
     }
 
     public void AddScoreToText(int playerScore)
@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLives(int currentLives)
     {
-        if(currentLives > 0 && currentLives < 4)
+        if (currentLives > 0 && currentLives < 4)
             _livesImg.sprite = _livesSprites[currentLives];
 
         if (currentLives <= 0)
@@ -67,9 +67,28 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateAmmo(int ammo)
+    private IEnumerator StartFlickerEffectRoutine(GameObject toFlicker, float duration)
     {
-        _ammoText.text = "Ammo: " + ammo.ToString();
+        while(duration > 0)
+        {
+            toFlicker.SetActive(false);
+            yield return new WaitForSeconds(_flickerDelay);
+            toFlicker.SetActive(true);
+            duration--;
+            yield return new WaitForSeconds(_flickerDelay);
+        }
+
+        toFlicker.SetActive(false);
+    }
+
+    public void ActivateWaveIncomingEffect()
+    {
+        StartCoroutine(StartFlickerEffectRoutine(_waveIncomingText.gameObject, 5f));
+    }
+
+    public void UpdateAmmo(int currentAmmo, int maxAmmo)
+    {
+        _ammoText.text = "Ammo: " + currentAmmo.ToString() + " / " + maxAmmo.ToString();
     }
 
     public void UpdateThrusterFuel(float fuelAmount)

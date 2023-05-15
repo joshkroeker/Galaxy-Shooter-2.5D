@@ -5,10 +5,6 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 4f;
-
-    [SerializeField] private float _xScreenMinBound = -11f;
-    [SerializeField] private float _xScreenMaxBound = 11f;
-
     [SerializeField] private int pointsToAdd = 10;
 
     private Player _player;
@@ -24,6 +20,9 @@ public class Enemy : MonoBehaviour
 
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
+
+    [SerializeField] private List<Transform> _path = new List<Transform>();
+    [SerializeField] private int _moveIndex = 1;
 
     private void Start()
     {
@@ -56,25 +55,39 @@ public class Enemy : MonoBehaviour
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
             for (int i = 0; i < lasers.Length; i++)
             {
-                lasers[i].SetEnemyLaser();
+                lasers[i].IsEnemyLaser = true;
             }
         }
     }
 
     void CalculateMovement()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
-        if (transform.position.y <= -5.5f)
+        if(_moveIndex <= _path.Count - 1 && transform.position != _path[_moveIndex].position)
         {
-            float randomX = Random.Range(_xScreenMinBound, _xScreenMaxBound);
-            transform.position = new Vector3(randomX, 7f, transform.position.z);
+            transform.position = Vector2.MoveTowards(transform.position, _path[_moveIndex].position, _speed * Time.deltaTime);
+        }
+        else if(_moveIndex <= _path.Count - 1 && transform.position == _path[_moveIndex].position)
+        {
+            _moveIndex++;
+
+            if (_moveIndex > _path.Count - 1)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
+    public void ReceivePathContainer(Transform pathContainer)
+    {
+        for (int i = 0; i < pathContainer.childCount; i++)
+        {
+            _path.Add(pathContainer.GetChild(i));
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (_isAlive && other.TryGetComponent<Laser>(out Laser laser))
+        if (_isAlive && other.TryGetComponent<Laser>(out Laser laser) && !laser.IsEnemyLaser)
         {
             Destroy(laser.gameObject);
             if (_player != null)

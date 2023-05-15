@@ -6,9 +6,15 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] GameObject _enemyContainer;
-    [SerializeField] float _enemySpawnDelay = 3.0f;
+    [SerializeField] float _delayBetweenSpawns = 1.0f;
+    [SerializeField] int _enemiesInWave = 3;
+    [SerializeField] bool _canSpawnNextWave = true;
+    [SerializeField] int _increaseWaveLimitCounter = 0;
+    [SerializeField] UIManager _uiManager;
     [SerializeField] GameObject[] _powerups;
     [SerializeField] GameObject _wideSweepPowerup;
+    [SerializeField] private int _pathID;
+    [SerializeField] private Transform[] _pathContainers;
 
     private bool _stopSpawning = false;
 
@@ -22,12 +28,41 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnEnemyRoutine()
     {
         yield return new WaitForSeconds(3.0f);
+        int currentEnemyCounter;
 
-        while (!_stopSpawning)
+        while (!_stopSpawning && _canSpawnNextWave)
         {
-            GameObject enemy = Instantiate(_enemyPrefab, SetRandomPosition(), Quaternion.identity);
-            enemy.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(_enemySpawnDelay);
+            _pathID = Random.Range(0, 2);
+            for (currentEnemyCounter = 0; currentEnemyCounter < _enemiesInWave; currentEnemyCounter++)
+            {
+                Transform pathContainer = _pathContainers[_pathID];
+                Transform spawnPoint = pathContainer.GetChild(0);
+                GameObject enemy = Instantiate(_enemyPrefab, spawnPoint.position, Quaternion.identity);
+                enemy.transform.parent = _enemyContainer.transform;
+                enemy.GetComponent<Enemy>().ReceivePathContainer(pathContainer);
+
+                yield return new WaitForSeconds(_delayBetweenSpawns);
+            }
+
+            if (currentEnemyCounter < _enemiesInWave)
+            {
+                _canSpawnNextWave = false;
+            }
+            else if (currentEnemyCounter >= _enemiesInWave)
+            {
+                yield return new WaitForSeconds(8.0f);
+                _canSpawnNextWave = true;
+                currentEnemyCounter = 0;
+                _increaseWaveLimitCounter++;
+            }
+
+            if (_increaseWaveLimitCounter > 5)
+            {
+                _increaseWaveLimitCounter = 0;
+                _enemiesInWave++;
+                _uiManager.ActivateWaveIncomingEffect();
+                yield return new WaitForSeconds(5f);
+            }
         }
     }
 

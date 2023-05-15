@@ -49,10 +49,14 @@ public class Laser : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    public void SetEnemyLaser()
+    
+    public bool IsEnemyLaser
     {
-        _isEnemyLaser = true;
+        get { return this._isEnemyLaser; }
+        set
+        {
+            _isEnemyLaser = value;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
