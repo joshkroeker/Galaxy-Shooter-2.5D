@@ -294,7 +294,7 @@ MonoBehaviour:
   _xMaxBound: 12
   _xMinBound: -12
   _yMinBound: -3.8
-  _maxAmmo: 15
+  _maxAmmo: 30
   _maxThrusterFuel: 5
   _thrusterFuel: 100
   _canRefuel: 0
@@ -1580,6 +1580,7 @@ MonoBehaviour:
   - {fileID: 5855690865393437780, guid: 8c3750ab3abfea94587fb9f86d1d03c4, type: 3}
   - {fileID: 8732503296425991173, guid: dc6c9b97fd94f854999e388296e8e2e0, type: 3}
   - {fileID: 3379328613295734854, guid: 872b8cff1a822134fbdd7bd829bc184a, type: 3}
+  - {fileID: 4754343714203973368, guid: e6f36c371d61307408afab44f49f3973, type: 3}
   _wideSweepPowerup: {fileID: 8662898065698079849, guid: 5168d93fe5540d64abda3911fff35d8c, type: 3}
   _pathID: 0
   _pathContainers:

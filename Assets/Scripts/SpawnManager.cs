@@ -50,7 +50,7 @@ public class SpawnManager : MonoBehaviour
             }
             else if (currentEnemyCounter >= _enemiesInWave)
             {
-                yield return new WaitForSeconds(8.0f);
+                yield return new WaitForSeconds(6.0f);
                 _canSpawnNextWave = true;
                 currentEnemyCounter = 0;
                 _increaseWaveLimitCounter++;
@@ -75,7 +75,7 @@ public class SpawnManager : MonoBehaviour
             int randomPowerup = Random.Range(0, _powerups.Length);
             Instantiate(_powerups[randomPowerup], SetRandomPosition(), Quaternion.identity);
 
-            int randomWait = Random.Range(4, 8);
+            int randomWait = Random.Range(8, 16);
             yield return new WaitForSeconds(randomWait);
         }
     }

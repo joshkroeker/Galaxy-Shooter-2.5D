@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _xMinBound = -12f;
     [SerializeField] private float _yMinBound = -3.8f;
     private int _currentAmmo;
-    [SerializeField] private int _maxAmmo = 15;
+    [SerializeField] private int _maxAmmo = 30;
     [SerializeField] private float _maxThrusterFuel = 15f;
     [SerializeField] private float _thrusterFuel;
     [SerializeField] private bool _canRefuel = false;
@@ -223,11 +223,16 @@ public class Player : MonoBehaviour
 
         if(_shieldStatus >= 3)
         {
-            _shieldStatus = 0;
-            _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);
-            _shieldSR.color = _shieldStatusColors[_shieldStatus];
+            DeactivateShields();
         }
+    }
+
+    public void DeactivateShields()
+    {
+        _shieldStatus = 0;
+        _isShieldActive = false;
+        _shieldVisualizer.SetActive(false);
+        _shieldSR.color = _shieldStatusColors[_shieldStatus];
     }
 
     public void ActivateTripleShot()
@@ -268,7 +273,7 @@ public class Player : MonoBehaviour
 
     public void ReplenishAmmo()
     {
-        _currentAmmo = 15;
+        _currentAmmo = _maxAmmo;
         _uiManager.UpdateAmmo(_currentAmmo, _maxAmmo );
     }
 
