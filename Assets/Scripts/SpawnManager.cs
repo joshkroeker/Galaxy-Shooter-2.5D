@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] GameObject _enemyPrefab;
+    [SerializeField] GameObject _enemyLaserPrefab;
     [SerializeField] GameObject _enemyContainer;
     [SerializeField] float _delayBetweenSpawns = 1.0f;
     [SerializeField] int _enemiesInWave = 3;
@@ -35,11 +36,7 @@ public class SpawnManager : MonoBehaviour
             _pathID = Random.Range(0, 2);
             for (currentEnemyCounter = 0; currentEnemyCounter < _enemiesInWave; currentEnemyCounter++)
             {
-                Transform pathContainer = _pathContainers[_pathID];
-                Transform spawnPoint = pathContainer.GetChild(0);
-                GameObject enemy = Instantiate(_enemyPrefab, spawnPoint.position, Quaternion.identity);
-                enemy.transform.parent = _enemyContainer.transform;
-                enemy.GetComponent<Enemy>().ReceivePathContainer(pathContainer);
+                EnemySpawnPathSetup(_enemyPrefab);
 
                 yield return new WaitForSeconds(_delayBetweenSpawns);
             }
@@ -62,8 +59,20 @@ public class SpawnManager : MonoBehaviour
                 _enemiesInWave++;
                 _uiManager.ActivateWaveIncomingEffect();
                 yield return new WaitForSeconds(5f);
+
+                _pathID = 2; // path type for this specific enemy
+                EnemySpawnPathSetup(_enemyLaserPrefab);
             }
         }
+    }
+
+    private void EnemySpawnPathSetup(GameObject enemyPrefab)
+    {
+        Transform pathContainer = _pathContainers[_pathID];
+        Transform spawnPoint = pathContainer.GetChild(0);
+        GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        enemy.transform.parent = _enemyContainer.transform;
+        enemy.GetComponent<Enemy>().ReceivePathContainer(pathContainer);
     }
 
     IEnumerator SpawnPowerupRoutine()

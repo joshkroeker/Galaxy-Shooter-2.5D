@@ -23,6 +23,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool IsGameOver()
+    {
+        return _isGameOver;
+    }
+
     public void GameOver()
     {
         Debug.Log("GameManager::GameOver() Called");
