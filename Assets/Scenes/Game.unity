@@ -1668,14 +1668,15 @@ MonoBehaviour:
   _canSpawnNextWave: 1
   _increaseWaveLimitCounter: 0
   _uiManager: {fileID: 514043924}
-  _powerups:
-  - {fileID: 8445345134916422078, guid: 085e93e2f5e42424ca04aee2cd87180a, type: 3}
-  - {fileID: 2348588107871343378, guid: fcbc3a00528ef024fa1703ce45ce7389, type: 3}
-  - {fileID: 5855690865393437780, guid: 8c3750ab3abfea94587fb9f86d1d03c4, type: 3}
+  _commmonPowerups:
   - {fileID: 8732503296425991173, guid: dc6c9b97fd94f854999e388296e8e2e0, type: 3}
+  - {fileID: 2348588107871343378, guid: fcbc3a00528ef024fa1703ce45ce7389, type: 3}
+  - {fileID: 8445345134916422078, guid: 085e93e2f5e42424ca04aee2cd87180a, type: 3}
+  _rarePowerups:
   - {fileID: 3379328613295734854, guid: 872b8cff1a822134fbdd7bd829bc184a, type: 3}
+  - {fileID: 5855690865393437780, guid: 8c3750ab3abfea94587fb9f86d1d03c4, type: 3}
   - {fileID: 4754343714203973368, guid: e6f36c371d61307408afab44f49f3973, type: 3}
-  _wideSweepPowerup: {fileID: 8662898065698079849, guid: 5168d93fe5540d64abda3911fff35d8c, type: 3}
+  - {fileID: 8662898065698079849, guid: 5168d93fe5540d64abda3911fff35d8c, type: 3}
   _pathID: 0
   _pathContainers:
   - {fileID: 2108204389}
@@ -2807,7 +2808,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2009605031}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 15
+  m_MaxValue: 5
   m_WholeNumbers: 1
   m_Value: 1
   m_OnValueChanged:
