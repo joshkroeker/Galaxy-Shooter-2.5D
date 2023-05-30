@@ -1661,13 +1661,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 3655474089924562741, guid: 9dd9f9c5c4f4ba34e8a7aba3d20ab751, type: 3}
-  _enemyLaserPrefab: {fileID: 6632000685921609559, guid: b6616357c6cdbb74f98a07ea5c8a66d5, type: 3}
-  _enemyContainer: {fileID: 197186119}
-  _delayBetweenSpawns: 1
-  _enemiesInWave: 3
-  _canSpawnNextWave: 1
-  _increaseWaveLimitCounter: 0
-  _uiManager: {fileID: 514043924}
+  _shieldedEnemyPrefab: {fileID: 3655474089924562741, guid: 92d47108768dc4e46a8435684b29daf2, type: 3}
+  _enemyChargeBeamPrefab: {fileID: 6632000685921609559, guid: f598fd0f22394d24ba093fc9a1bc454b, type: 3}
   _commmonPowerups:
   - {fileID: 8732503296425991173, guid: dc6c9b97fd94f854999e388296e8e2e0, type: 3}
   - {fileID: 2348588107871343378, guid: fcbc3a00528ef024fa1703ce45ce7389, type: 3}
@@ -1677,11 +1672,17 @@ MonoBehaviour:
   - {fileID: 5855690865393437780, guid: 8c3750ab3abfea94587fb9f86d1d03c4, type: 3}
   - {fileID: 4754343714203973368, guid: e6f36c371d61307408afab44f49f3973, type: 3}
   - {fileID: 8662898065698079849, guid: 5168d93fe5540d64abda3911fff35d8c, type: 3}
+  _canSpawnNextWave: 1
+  _enemiesInWave: 3
+  _delayBetweenSpawns: 1
+  _increaseWaveLimitCounter: 0
   _pathID: 0
   _pathContainers:
   - {fileID: 2108204389}
   - {fileID: 640805840}
   - {fileID: 2133857476}
+  _enemyContainer: {fileID: 197186119}
+  _uiManager: {fileID: 514043924}
 --- !u!4 &828411471
 Transform:
   m_ObjectHideFlags: 0

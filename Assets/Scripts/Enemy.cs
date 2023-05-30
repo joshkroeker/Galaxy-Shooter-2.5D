@@ -2,38 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyTypes { laserBasic, laserBeam }
+public enum EnemyTypes { laserBasic, chargeBeam, shielded }
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private EnemyTypes _enemyType;
-
-    [Header("Generic Enemy Settings")]
-    [SerializeField] private float _speed = 4f;
-    [SerializeField] private int pointsToAdd = 10;
-    [SerializeField] GameObject _explosionPrefab;
-    [SerializeField] GameObject _laserBeamPrefab;
-    [SerializeField] float animationTime;
-    [SerializeField] private List<Transform> _path = new List<Transform>();
-    [SerializeField] private int _moveIndex = 1;
-    private Player _player;
-    private bool _isAlive = true;
-
-    [Header("Enemy Basic Type Attributes")]
+    [Header("Basic Enemy Attributes")]
+    [SerializeField] float animationTime = 2.3f;
     private Animator _anim;
-    [SerializeField] GameObject _laserPrefab;
-    [SerializeField] AudioClip _fireLaserClip;
-    private float _fireRate = 3.0f;
-    private float _canFire = -1f;
 
-    private void Start()
+    [Header("Base Attributes")]
+    [SerializeField] protected EnemyTypes _enemyType;
+    [SerializeField] protected float _speed = 4f;
+    [SerializeField] protected int _pointsToAdd = 10;
+    [SerializeField] protected List<Transform> _path = new List<Transform>();
+    [SerializeField] protected int _moveIndex = 1;
+    [SerializeField] protected GameObject _explosionPrefab;
+    [SerializeField] protected GameObject _laserPrefab;
+    [SerializeField] protected AudioClip _fireLaserClip;
+    protected Player _player;
+    protected bool _isAlive = true;
+    protected float _canFire = -1f;
+    protected float _fireRate = 3.0f;
+
+    protected virtual void Start()
     {       
         _player = FindObjectOfType<Player>();
         if(_player == null)
         {
             Debug.LogError("The Player is NULL");
+            Destroy(this);
         }
 
-        if(_enemyType == EnemyTypes.laserBasic)
+        if (_enemyType == EnemyTypes.laserBasic)
         {
             _anim = GetComponent<Animator>();
 
@@ -42,47 +41,12 @@ public class Enemy : MonoBehaviour
                 Debug.LogError("The Animator is NULL");
             }
         }
-
-        if(_enemyType == EnemyTypes.laserBeam)
-        {
-            StartCoroutine(CalculatePathing());
-        }
-    }
-
-    private IEnumerator CalculatePathing()
-    {
-        while (_isAlive)
-        {
-            if (_moveIndex <= _path.Count - 1 && transform.position != _path[_moveIndex].position)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, _path[_moveIndex].position, _speed * Time.deltaTime);
-            }
-            else if (_moveIndex <= _path.Count - 1 && transform.position == _path[_moveIndex].position)
-            {
-                _moveIndex++;
-
-                if (_moveIndex > _path.Count - 1)
-                {
-                    Destroy(this.gameObject);
-                }
-                FireLaserBeam();
-
-                yield return new WaitForSeconds(5f);
-            }
-        }
-    }
-
-    private void FireLaserBeam()
-    {
-        GameObject laserBeam = Instantiate(_laserBeamPrefab, new Vector3(transform.position.x,
-            transform.position.y + -7.75f, 0f), Quaternion.identity);
-        Destroy(laserBeam, 5f);
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        if(_enemyType == EnemyTypes.laserBasic)
+        if(_enemyType != EnemyTypes.chargeBeam)
         {
             CalculateMovement();
 
@@ -90,6 +54,7 @@ public class Enemy : MonoBehaviour
             {
                 _fireRate = Random.Range(3f, 7f);
                 _canFire = Time.time + _fireRate;
+
                 GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
                 AudioSource.PlayClipAtPoint(_fireLaserClip, transform.position);
                 Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
@@ -101,13 +66,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void CalculateMovement()
+    private void CalculateMovement()
     {
-        if(_moveIndex <= _path.Count - 1 && transform.position != _path[_moveIndex].position)
+        if (_moveIndex <= _path.Count - 1 && transform.position != _path[_moveIndex].position)
         {
             transform.position = Vector2.MoveTowards(transform.position, _path[_moveIndex].position, _speed * Time.deltaTime);
         }
-        else if(_moveIndex <= _path.Count - 1 && transform.position == _path[_moveIndex].position)
+        else if (_moveIndex <= _path.Count - 1 && transform.position == _path[_moveIndex].position)
         {
             _moveIndex++;
 
@@ -118,7 +83,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void ReceivePathContainer(Transform pathContainer)
+    public virtual void ReceivePathContainer(Transform pathContainer)
     {
         for (int i = 0; i < pathContainer.childCount; i++)
         {
@@ -126,25 +91,25 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (_isAlive && other.TryGetComponent<Laser>(out Laser laser) && !laser.IsEnemyLaser)
         {
             Destroy(laser.gameObject);
             if (_player != null)
             {
-                _player.AddScore(pointsToAdd);
+                _player.AddScore(_pointsToAdd);
             }
-            InitiateEnemyDeathSequence();
+            ReceiveDamage();
         }
         else if (_isAlive && other.TryGetComponent<Player>(out Player player))
         {
             player.Damage();
-            InitiateEnemyDeathSequence();
+            ReceiveDamage();
         }
     }
 
-    private void InitiateEnemyDeathSequence()
+    protected virtual void ReceiveDamage()
     {
         _isAlive = false;
         _speed = 0f;
