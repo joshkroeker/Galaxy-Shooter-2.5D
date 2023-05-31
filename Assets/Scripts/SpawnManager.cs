@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] GameObject _shieldedEnemyPrefab;
     [SerializeField] GameObject _enemyChargeBeamPrefab;
+    [SerializeField] GameObject _aggressiveEnemyPrefab;
     [SerializeField] GameObject[] _commmonPowerups;
     [SerializeField] GameObject[] _rarePowerups;
 
@@ -40,15 +41,21 @@ public class SpawnManager : MonoBehaviour
             _pathID = Random.Range(0, 2);
             for (currentEnemyCounter = 0; currentEnemyCounter < _enemiesInWave; currentEnemyCounter++)
             {
-                //check if we are at the last enemy in the wave
                 if(currentEnemyCounter == (_enemiesInWave - 1))
-                {
-                    // spawn shielded enemy
+                {                    
                     EnemySpawnPathSetup(_shieldedEnemyPrefab);
                 }
                 else
                 {
-                    EnemySpawnPathSetup(_enemyPrefab);
+                    int rand = Random.Range(0, 3);
+                    if (rand == 2)
+                    {
+                        EnemySpawnPathSetup(_aggressiveEnemyPrefab);
+                    }
+                    else
+                    {
+                        EnemySpawnPathSetup(_enemyPrefab);
+                    }
                 }
 
                 yield return new WaitForSeconds(_delayBetweenSpawns);

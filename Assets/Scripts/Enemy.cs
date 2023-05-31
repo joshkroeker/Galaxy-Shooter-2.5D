@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyTypes { laserBasic, chargeBeam, shielded }
+public enum EnemyTypes { laserBasic, chargeBeam, shielded, aggressive }
 public class Enemy : MonoBehaviour
 {
     [Header("Basic Enemy Attributes")]
@@ -35,7 +35,6 @@ public class Enemy : MonoBehaviour
         if (_enemyType == EnemyTypes.laserBasic)
         {
             _anim = GetComponent<Animator>();
-
             if (_anim == null)
             {
                 Debug.LogError("The Animator is NULL");
