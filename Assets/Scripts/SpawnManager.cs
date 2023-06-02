@@ -9,6 +9,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _shieldedEnemyPrefab;
     [SerializeField] GameObject _enemyChargeBeamPrefab;
     [SerializeField] GameObject _aggressiveEnemyPrefab;
+    [SerializeField] GameObject _smartEnemyPrefab;
     [SerializeField] GameObject[] _commmonPowerups;
     [SerializeField] GameObject[] _rarePowerups;
 
@@ -47,10 +48,14 @@ public class SpawnManager : MonoBehaviour
                 }
                 else
                 {
-                    int rand = Random.Range(0, 3);
+                    int rand = Random.Range(0, 5);
                     if (rand == 2)
                     {
                         EnemySpawnPathSetup(_aggressiveEnemyPrefab);
+                    }
+                    else if(rand == 1 || rand == 4)
+                    {
+                        EnemySpawnPathSetup(_smartEnemyPrefab);
                     }
                     else
                     {

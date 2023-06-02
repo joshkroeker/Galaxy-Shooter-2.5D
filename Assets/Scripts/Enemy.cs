@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyTypes { laserBasic, chargeBeam, shielded, aggressive }
+public enum EnemyTypes { laserBasic, chargeBeam, shielded, aggressive, smart }
 public class Enemy : MonoBehaviour
 {
     [Header("Basic Enemy Attributes")]
@@ -49,19 +49,27 @@ public class Enemy : MonoBehaviour
         {
             CalculateMovement();
 
-            if (_isAlive && Time.time > _canFire)
+            if(_enemyType != EnemyTypes.smart)
             {
-                _fireRate = Random.Range(3f, 7f);
-                _canFire = Time.time + _fireRate;
-
-                GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-                AudioSource.PlayClipAtPoint(_fireLaserClip, transform.position);
-                Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-                for (int i = 0; i < lasers.Length; i++)
+                if (_isAlive && Time.time > _canFire)
                 {
-                    lasers[i].IsEnemyLaser = true;
+                    _fireRate = Random.Range(3f, 7f);
+                    _canFire = Time.time + _fireRate;
+
+                    Shoot();
                 }
             }
+        }
+    }
+
+    protected virtual void Shoot()
+    {
+        GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+        AudioSource.PlayClipAtPoint(_fireLaserClip, transform.position);
+        Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+        for (int i = 0; i < lasers.Length; i++)
+        {
+            lasers[i].IsEnemyLaser = true;
         }
     }
 

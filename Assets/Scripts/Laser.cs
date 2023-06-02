@@ -6,11 +6,16 @@ public class Laser : MonoBehaviour
 {
     [SerializeField] private float _speed = 8f;
     private bool _isEnemyLaser = false;
+    private bool _isSmartEnemyLaser = false;
 
     // Update is called once per frame
     void Update()
     {
         if (!_isEnemyLaser)
+        {
+            MoveUp();
+        }
+        else if (_isSmartEnemyLaser && _isEnemyLaser)
         {
             MoveUp();
         }
@@ -56,6 +61,15 @@ public class Laser : MonoBehaviour
         set
         {
             _isEnemyLaser = value;
+        }
+    }
+
+    public bool IsSmartEnemyLaser
+    {
+        get { return this._isSmartEnemyLaser; }
+        set
+        {
+            _isSmartEnemyLaser = value;
         }
     }
 
