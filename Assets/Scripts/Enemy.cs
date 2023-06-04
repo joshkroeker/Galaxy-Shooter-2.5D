@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyTypes { laserBasic, chargeBeam, shielded, aggressive, smart }
+public enum EnemyTypes { laserBasic, chargeBeam, shielded, aggressive, smart, avoid }
 public class Enemy : MonoBehaviour
 {
     [Header("Basic Enemy Attributes")]

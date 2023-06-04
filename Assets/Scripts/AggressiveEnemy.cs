@@ -14,8 +14,10 @@ public class AggressiveEnemy : Enemy
         {
             Ram();
         }
-
-        base.Update();
+        else
+        {
+            base.Update();
+        }
     }
 
     private void Ram()

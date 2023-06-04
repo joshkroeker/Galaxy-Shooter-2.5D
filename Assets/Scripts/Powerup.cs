@@ -59,7 +59,7 @@ public class Powerup : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        else if(other.tag == "Laser")
+        else if(other.tag == "Laser" && other.GetComponent<Laser>().IsEnemyLaser)
         {
             Destroy(this.gameObject);
         }

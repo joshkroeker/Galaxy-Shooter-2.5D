@@ -25,7 +25,6 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: 0";
         _gameOverTextObject.SetActive(false);
         _pressRTORestartObj.SetActive(false);
-        _ammoText.text = "Ammo: 30 / 30 ";
         _thrusterSlider.value = 100;
         _waveIncomingText.gameObject.SetActive(false);
     }

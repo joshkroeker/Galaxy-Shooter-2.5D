@@ -180,4 +180,4 @@ MonoBehaviour:
   _powerupLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  _minDistanceToRam: 5
+  _minDistanceToRam: 3

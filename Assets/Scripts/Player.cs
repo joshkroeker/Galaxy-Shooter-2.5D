@@ -25,6 +25,10 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isTripleShotActive = false;
     [SerializeField] private bool _isWideShotActive = false;
     [SerializeField] private GameObject _wideShotPrefab;
+    [SerializeField] private float _castRadius;
+    [SerializeField] private float _collectionDistance;
+    [SerializeField] private LayerMask _powerupLayerMask;
+    [SerializeField] private float _powerupMoveSpeed = 6f;
 
     [Header("Ship Movement & Firing Variables")]
     [SerializeField] private GameObject _laserPrefab;
@@ -67,6 +71,7 @@ public class Player : MonoBehaviour
 
         _thrusterFuel = _maxThrusterFuel;
         _currentAmmo = _maxAmmo;
+        _uiManager.UpdateAmmo(_currentAmmo, _maxAmmo);
     }
 
     void Update()
@@ -87,6 +92,15 @@ public class Player : MonoBehaviour
             {
                 _thrusterFuel = _maxThrusterFuel;
                 _canRefuel = false;
+            }
+        }
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            RaycastHit2D[] results = Physics2D.CircleCastAll(transform.position, _castRadius, Vector2.zero, _collectionDistance, _powerupLayerMask);
+            foreach(RaycastHit2D powerup in results)
+            {
+                powerup.transform.position = Vector2.MoveTowards(powerup.transform.position, transform.position, _powerupMoveSpeed * Time.deltaTime);
             }
         }
     }
@@ -156,15 +170,18 @@ public class Player : MonoBehaviour
 
         if(_isWideShotActive)
         {
-            Instantiate(_wideShotPrefab, transform.position, Quaternion.identity);
+            GameObject projectile = Instantiate(_wideShotPrefab, transform.position, Quaternion.identity);
+            projectile.layer = 9;
         }
         else if (_isTripleShotActive)
         {
-            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+            GameObject projectile = Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+            projectile.layer = 9;
         }
         else
         {
-            Instantiate(_laserPrefab, transform.position + new Vector3(0f, 1.05f, 0f), Quaternion.identity);
+            GameObject projectile = Instantiate(_laserPrefab, transform.position + new Vector3(0f, 1.05f, 0f), Quaternion.identity);
+            projectile.layer = 9;
         }
 
         _audioSource.Play();
