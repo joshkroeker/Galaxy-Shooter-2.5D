@@ -23,6 +23,9 @@ public class Enemy : MonoBehaviour
     protected float _canFire = -1f;
     protected float _fireRate = 3.0f;
 
+    [SerializeField] private LayerMask _powerupLayerMask;
+    private bool _isShootingPowerup = false;
+
     protected virtual void Start()
     {       
         _player = FindObjectOfType<Player>();
@@ -45,6 +48,11 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (IsPickupInFront() && !_isShootingPowerup)
+        {
+            StartCoroutine(ShootPowerup());
+        }
+
         if(_enemyType != EnemyTypes.chargeBeam)
         {
             CalculateMovement();
@@ -60,6 +68,21 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator ShootPowerup()
+    {
+        _isShootingPowerup = true;
+
+        Shoot();
+        yield return new WaitForSeconds(1.5f);
+
+        _isShootingPowerup = false;
+    }
+
+    private bool IsPickupInFront()
+    {
+        return Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity, _powerupLayerMask);
     }
 
     protected virtual void Shoot()

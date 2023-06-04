@@ -155,4 +155,7 @@ MonoBehaviour:
   _explosionPrefab: {fileID: 0}
   _laserPrefab: {fileID: 0}
   _fireLaserClip: {fileID: 0}
+  _powerupLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
   _chargeBeamPrefab: {fileID: 2147268766824651849, guid: 2daae24ad4cde2d478d6a46c5a6df4c6, type: 3}

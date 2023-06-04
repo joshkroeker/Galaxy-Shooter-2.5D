@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3154912113cbb4a498df6f571c74e18c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8726415, g: 1, b: 0.9406263, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -177,6 +177,9 @@ MonoBehaviour:
   _explosionPrefab: {fileID: 1248490044564488335, guid: dac391575840a644fad3e0910447ba64, type: 3}
   _laserPrefab: {fileID: 8234971772157981718, guid: 619e497f2575f184ba9eb870ff24d4be, type: 3}
   _fireLaserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _powerupLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
   _distance: 30
   _playerLayerMask:
     serializedVersion: 2

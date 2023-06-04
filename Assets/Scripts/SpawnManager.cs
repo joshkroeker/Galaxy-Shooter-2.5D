@@ -39,7 +39,7 @@ public class SpawnManager : MonoBehaviour
 
         while (!_stopSpawning && _canSpawnNextWave)
         {
-            _pathID = Random.Range(0, 2);
+            _pathID = Random.Range(0, 3);
             for (currentEnemyCounter = 0; currentEnemyCounter < _enemiesInWave; currentEnemyCounter++)
             {
                 if(currentEnemyCounter == (_enemiesInWave - 1))
@@ -85,7 +85,7 @@ public class SpawnManager : MonoBehaviour
                 _uiManager.ActivateWaveIncomingEffect();
                 yield return new WaitForSeconds(5f);
 
-                _pathID = 2; // path type for this specific enemy
+                _pathID = 3; // path type for this specific enemy
                 EnemySpawnPathSetup(_enemyChargeBeamPrefab);
             }
         }
@@ -109,12 +109,12 @@ public class SpawnManager : MonoBehaviour
         {
             counter++;
 
-            if(counter % 15 == 0)
+            if(counter % 10 == 0)
             {
                 int rand = Random.Range(0, _commmonPowerups.Length);
                 Instantiate(_commmonPowerups[rand], SetRandomPosition(), Quaternion.identity);
             }
-            else if(counter % 35 == 0)
+            else if(counter % 28 == 0)
             {
                 int rand = Random.Range(0, _rarePowerups.Length);
                 Instantiate(_rarePowerups[rand], SetRandomPosition(), Quaternion.identity);

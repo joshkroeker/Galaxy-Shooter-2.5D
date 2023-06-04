@@ -177,4 +177,7 @@ MonoBehaviour:
   _explosionPrefab: {fileID: 1248490044564488335, guid: dac391575840a644fad3e0910447ba64, type: 3}
   _laserPrefab: {fileID: 8234971772157981718, guid: 619e497f2575f184ba9eb870ff24d4be, type: 3}
   _fireLaserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  _minDistanceToRam: 4
+  _powerupLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  _minDistanceToRam: 5

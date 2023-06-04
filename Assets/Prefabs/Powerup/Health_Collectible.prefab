@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9169590005273693073}
   - component: {fileID: 758703556541840299}
   - component: {fileID: 1248772255757075832}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Health_Collectible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,5 +147,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerupClip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
-  _speed: 3
+  _speed: 3.5
   _powerupID: 4
