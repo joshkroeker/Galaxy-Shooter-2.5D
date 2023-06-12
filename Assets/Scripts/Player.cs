@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isTripleShotActive = false;
     [SerializeField] private bool _isWideShotActive = false;
     [SerializeField] private GameObject _wideShotPrefab;
+    [SerializeField] private bool _isGuidingMissileActive = false;
+    [SerializeField] private GameObject _guidingMissilePrefab;
     [SerializeField] private float _castRadius;
     [SerializeField] private float _collectionDistance;
     [SerializeField] private LayerMask _powerupLayerMask;
@@ -168,23 +170,30 @@ public class Player : MonoBehaviour
 
         _canFire = Time.time + _fireRate;
 
-        if(_isWideShotActive)
+        if (_isGuidingMissileActive)
         {
-            GameObject projectile = Instantiate(_wideShotPrefab, transform.position, Quaternion.identity);
-            projectile.layer = 9;
+            SpawnProjectile(_guidingMissilePrefab, Vector3.zero);
+        }
+        else if(_isWideShotActive)
+        {
+            SpawnProjectile(_wideShotPrefab, Vector3.zero);
         }
         else if (_isTripleShotActive)
         {
-            GameObject projectile = Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
-            projectile.layer = 9;
+            SpawnProjectile(_tripleShotPrefab, Vector3.zero);
         }
         else
         {
-            GameObject projectile = Instantiate(_laserPrefab, transform.position + new Vector3(0f, 1.05f, 0f), Quaternion.identity);
-            projectile.layer = 9;
+            SpawnProjectile(_laserPrefab, new Vector3(0f, 1.05f, 0f));
         }
 
         _audioSource.Play();
+    }
+
+    private void SpawnProjectile(GameObject projectile, Vector3 added)
+    {
+        GameObject newProjectile = Instantiate(projectile, transform.position + added, Quaternion.identity);
+        newProjectile.layer = 9;
     }
 
     public void Damage()
@@ -260,7 +269,7 @@ public class Player : MonoBehaviour
 
     IEnumerator TripleShotPowerDownRoutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(7.5f);
         _isTripleShotActive = false;
     }
 
@@ -320,8 +329,19 @@ public class Player : MonoBehaviour
     
     IEnumerator WideSweepPowerDown()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(10f);
         _isWideShotActive = false;
     }
 
+    public void ActivateGuidingMissile()
+    {
+        _isGuidingMissileActive = true;
+        StartCoroutine(GuidingMissilePowerDown());
+    }
+
+    IEnumerator GuidingMissilePowerDown()
+    {
+        yield return new WaitForSeconds(10f);
+        _isGuidingMissileActive = false;
+    }
 }

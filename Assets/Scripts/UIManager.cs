@@ -10,10 +10,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] Sprite[] _livesSprites;
     [SerializeField] private GameObject _gameOverTextObject;
     [SerializeField] private GameObject _pressRTORestartObj;
-    [SerializeField] private Text _ammoText;
+    [SerializeField] private Text _currentAmmoText;
+    [SerializeField] private Text _maxAmmoText;
     [SerializeField] private Slider _thrusterSlider;
     [SerializeField] private float _flickerDelay = 0.5f;
     [SerializeField] private GameManager _gameManager;
+    [SerializeField] private Slider _bossLeftCannonHPBar;
+    [SerializeField] private Slider _bossRightCannonHPBar;
 
     //add a reference to the text object
     [SerializeField] private Text _waveIncomingText;
@@ -87,11 +90,41 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmo(int currentAmmo, int maxAmmo)
     {
-        _ammoText.text = "Ammo: " + currentAmmo.ToString() + " / " + maxAmmo.ToString();
+        _currentAmmoText.text = currentAmmo.ToString();
+        _maxAmmoText.text = maxAmmo.ToString();
     }
 
     public void UpdateThrusterFuel(float fuelAmount)
     {
         _thrusterSlider.value = fuelAmount;
+    }
+
+    public void ShowBossHealthBars(int maxHP)
+    {
+        _bossRightCannonHPBar.gameObject.SetActive(true);
+        _bossLeftCannonHPBar.gameObject.SetActive(true);
+
+        _bossLeftCannonHPBar.maxValue = maxHP;
+        _bossRightCannonHPBar.maxValue = maxHP;
+    }
+
+    public void UpdateRightCannonHP(int currentHPValue)
+    {
+        _bossRightCannonHPBar.value = currentHPValue;
+
+        if(currentHPValue == 0)
+        {
+            _bossRightCannonHPBar.gameObject.SetActive(false);
+        }
+    }
+
+    public void UpdateLeftCannonHP(int currentHPValue)
+    {
+        _bossLeftCannonHPBar.value = currentHPValue;
+
+        if (currentHPValue == 0)
+        {
+            _bossLeftCannonHPBar.gameObject.SetActive(false);
+        }
     }
 }

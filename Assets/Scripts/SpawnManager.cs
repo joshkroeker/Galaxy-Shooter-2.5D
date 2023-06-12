@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    [Header("Debugging Settings")]
+    [SerializeField] private bool _isDebugModeOn = false;
+
     [Header("Spawnables")]
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] GameObject _shieldedEnemyPrefab;
@@ -11,10 +14,12 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _aggressiveEnemyPrefab;
     [SerializeField] GameObject _smartEnemyPrefab;
     [SerializeField] GameObject _avoidEnemyPrefab;
+    [SerializeField] GameObject _bossPrefab;
     [SerializeField] GameObject[] _commmonPowerups;
     [SerializeField] GameObject[] _rarePowerups;
 
     [Header("Wave Settings")]
+    [SerializeField] int _numberOfRounds = 0;
     [SerializeField] bool _canSpawnNextWave = true;
     [SerializeField] int _enemiesInWave = 3;
     [SerializeField] float _delayBetweenSpawns = 1.0f;
@@ -40,6 +45,19 @@ public class SpawnManager : MonoBehaviour
 
         while (!_stopSpawning && _canSpawnNextWave)
         {
+            if(_numberOfRounds == 20)
+            {
+                SpawnBoss();
+                break;
+            }
+            else if (_isDebugModeOn)
+            {
+                yield return new WaitForSeconds(2.0f);
+
+                SpawnBoss();
+                break;
+            }
+
             _pathID = Random.Range(0, 3);
             for (currentEnemyCounter = 0; currentEnemyCounter < _enemiesInWave; currentEnemyCounter++)
             {
@@ -50,7 +68,7 @@ public class SpawnManager : MonoBehaviour
                 else
                 {
                     int rand = Random.Range(0, 9);
-                    if (rand == 2)
+                    if (rand == 2 || rand == 7)
                     {
                         EnemySpawnPathSetup(_aggressiveEnemyPrefab);
                     }
@@ -80,6 +98,7 @@ public class SpawnManager : MonoBehaviour
                 yield return new WaitForSeconds(6.0f);
                 _canSpawnNextWave = true;
                 currentEnemyCounter = 0;
+                _numberOfRounds++;
                 _increaseWaveLimitCounter++;
             }
 
@@ -94,6 +113,11 @@ public class SpawnManager : MonoBehaviour
                 EnemySpawnPathSetup(_enemyChargeBeamPrefab);
             }
         }
+    }
+
+    private void SpawnBoss()
+    {
+        Debug.Log("Spawned Boss");
     }
 
     private void EnemySpawnPathSetup(GameObject enemyPrefab)

@@ -137,6 +137,10 @@ public class Enemy : MonoBehaviour
             player.Damage();
             ReceiveDamage();
         }
+        else if(_isAlive && other.tag == "Guiding Missile")
+        {
+            ReceiveDamage();
+        }
     }
 
     protected virtual void ReceiveDamage()
