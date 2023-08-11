@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
         {
             _isGameOver = false;
             _player.IsLocked = false;
+            _player.Thrusters.SetActive(true);
             SceneManager.LoadScene("Game");
         }
 

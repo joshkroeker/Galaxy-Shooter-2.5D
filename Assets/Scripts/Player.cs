@@ -10,6 +10,19 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject[] _engines;
     private int _lastEngineDamaged;
     [SerializeField] private GameObject _explosionPrefab;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    public GameObject Thrusters
+    {
+        get { return _thrusters; }
+        set
+        {
+            if(value != null)
+            {
+                _thrusters = value;
+            }
+        }
+    }
+    [SerializeField] private GameObject _thrusters;
 
     [Header("Power-up Related Variables")]
     [SerializeField] private float _speed = 5f;
@@ -242,7 +255,12 @@ public class Player : MonoBehaviour
         {
             _spawnManager.OnPlayerDeath();
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            IsLocked = true;
+            _engines[0].gameObject.SetActive(false);
+            _engines[1].gameObject.SetActive(false);
+            _thrusters.SetActive(false);
+            Color color = new Color(0f, 0f, 0f, 0f);
+            _spriteRenderer.color = color;
         }
     }
 

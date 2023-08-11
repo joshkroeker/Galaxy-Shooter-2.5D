@@ -46,9 +46,16 @@ public class SpawnManager : MonoBehaviour
 
         while (!_stopSpawning && _canSpawnNextWave)
         {
-            if(_numberOfRounds == 10)
+            if(_numberOfRounds == 15)
             {
                 yield return new WaitForSeconds(2.0f);
+
+                Boss boss = Instantiate(_bossPrefab, new Vector3(0f, 12.6f, 0f), Quaternion.identity).GetComponent<Boss>();
+
+                yield return new WaitForSeconds(0.5f);
+
+                StartCoroutine(boss.EntranceRoutine());
+
                 break;
             }
             else if (_isDebugModeOn)
@@ -109,7 +116,7 @@ public class SpawnManager : MonoBehaviour
                 _increaseWaveLimitCounter++;
             }
 
-            if (_increaseWaveLimitCounter > 5)
+            if (_increaseWaveLimitCounter > 4)
             {
                 _increaseWaveLimitCounter = 0;
                 _enemiesInWave++;

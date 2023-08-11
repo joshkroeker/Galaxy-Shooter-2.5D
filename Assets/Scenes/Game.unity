@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -377,6 +377,8 @@ MonoBehaviour:
   - {fileID: 1673287095}
   - {fileID: 1700095320}
   _explosionPrefab: {fileID: 1248490044564488335, guid: dac391575840a644fad3e0910447ba64, type: 3}
+  _spriteRenderer: {fileID: 112693419}
+  _thrusters: {fileID: 1760258657}
   _speed: 5
   _speedBoosted: 10
   _thrusterSpeed: 8
@@ -1913,6 +1915,7 @@ MonoBehaviour:
   - {fileID: 4754343714203973368, guid: e6f36c371d61307408afab44f49f3973, type: 3}
   - {fileID: 8662898065698079849, guid: 5168d93fe5540d64abda3911fff35d8c, type: 3}
   - {fileID: 3050259287988259573, guid: 73ff64961b46f3049a344013e7f66c49, type: 3}
+  - {fileID: 8732503296425991173, guid: dc6c9b97fd94f854999e388296e8e2e0, type: 3}
   _numberOfRounds: 0
   _canSpawnNextWave: 1
   _enemiesInWave: 4
@@ -3584,7 +3587,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -14.795273}
+  m_AnchoredPosition: {x: 0, y: -14.795288}
   m_SizeDelta: {x: 180.77, y: 30.190506}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1637507486

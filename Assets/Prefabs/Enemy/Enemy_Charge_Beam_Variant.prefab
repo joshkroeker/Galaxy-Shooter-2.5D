@@ -153,7 +153,7 @@ MonoBehaviour:
   _path: []
   _moveIndex: 1
   _explosionPrefab: {fileID: 1248490044564488335, guid: dac391575840a644fad3e0910447ba64, type: 3}
-  _laserPrefab: {fileID: 0}
+  _laserPrefab: {fileID: 8234971772157981718, guid: 619e497f2575f184ba9eb870ff24d4be, type: 3}
   _fireLaserClip: {fileID: 0}
   _powerupLayerMask:
     serializedVersion: 2
