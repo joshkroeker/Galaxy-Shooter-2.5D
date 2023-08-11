@@ -66,7 +66,7 @@ public class Boss : MonoBehaviour
         while(transform.position != _targetMovePositionOnScreen)
         {
             _cameraToShake.ShakeCamera();
-            transform.position = Vector2.MoveTowards(transform.position, _targetMovePositionOnScreen, _entrySpeed);
+            transform.position = Vector2.MoveTowards(transform.position, _targetMovePositionOnScreen, _entrySpeed * Time.deltaTime);
 
             yield return new WaitForSeconds(0.01f);
         }

@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67cf23e35a52774cbb8fd104d56f542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entrySpeed: 0.01
+  _entrySpeed: 5
   _cameraToShake: {fileID: 0}
   _targetMovePositionOnScreen: {x: 0, y: 5.2, z: 0}
   _uiManager: {fileID: 0}

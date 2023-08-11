@@ -1915,13 +1915,9 @@ MonoBehaviour:
   - {fileID: 4754343714203973368, guid: e6f36c371d61307408afab44f49f3973, type: 3}
   - {fileID: 8662898065698079849, guid: 5168d93fe5540d64abda3911fff35d8c, type: 3}
   - {fileID: 3050259287988259573, guid: 73ff64961b46f3049a344013e7f66c49, type: 3}
-  - {fileID: 8732503296425991173, guid: dc6c9b97fd94f854999e388296e8e2e0, type: 3}
   _numberOfRounds: 0
-  _canSpawnNextWave: 1
   _enemiesInWave: 4
   _delayBetweenSpawns: 0.75
-  _increaseWaveLimitCounter: 0
-  _pathID: 0
   _pathContainers:
   - {fileID: 2108204389}
   - {fileID: 640805840}

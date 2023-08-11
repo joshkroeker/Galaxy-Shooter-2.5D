@@ -21,17 +21,26 @@ public class SpawnManager : MonoBehaviour
     [Header("Wave Settings")]
     private int _currentRound = 1;
     [SerializeField] int _numberOfRounds = 0;
-    [SerializeField] bool _canSpawnNextWave = true;
+    bool _canSpawnNextWave = true;
     [SerializeField] int _enemiesInWave = 3;
     [SerializeField] float _delayBetweenSpawns = 1.0f;
-    [SerializeField] int _increaseWaveLimitCounter = 0;
-    [SerializeField] private int _pathID;
+    int _increaseWaveLimitCounter = 0;
+    private int _pathID;
     [SerializeField] private Transform[] _pathContainers;
 
     [Header("References")]
     [SerializeField] GameObject _enemyContainer;
     [SerializeField] UIManager _uiManager;
+    private Player _player;
     private bool _stopSpawning = false;
+
+    private void Start()
+    {
+        if(_player == null)
+        {
+            _player = FindObjectOfType<Player>();
+        }
+    }
 
     public void StartSpawning()
     {
@@ -46,7 +55,7 @@ public class SpawnManager : MonoBehaviour
 
         while (!_stopSpawning && _canSpawnNextWave)
         {
-            if(_numberOfRounds == 15)
+            if(_numberOfRounds == 14)
             {
                 yield return new WaitForSeconds(2.0f);
 
@@ -121,7 +130,9 @@ public class SpawnManager : MonoBehaviour
                 _increaseWaveLimitCounter = 0;
                 _enemiesInWave++;
                 _currentRound++;
+                _player.ReplenishAmmo();
                 _uiManager.ActivateNewRoundEffect(_currentRound);
+                
                 yield return new WaitForSeconds(5f);
 
                 _pathID = 3; // path type for this specific enemy
