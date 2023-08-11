@@ -5,7 +5,7 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
     [SerializeField] private float _speed = 8f;
-    private bool _isEnemyLaser = false;
+    [SerializeField] private bool _isEnemyLaser = false;
     private bool _isSmartEnemyLaser = false;
 
     // Update is called once per frame

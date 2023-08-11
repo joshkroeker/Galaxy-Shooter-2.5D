@@ -19,6 +19,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject[] _rarePowerups;
 
     [Header("Wave Settings")]
+    private int _currentRound = 1;
     [SerializeField] int _numberOfRounds = 0;
     [SerializeField] bool _canSpawnNextWave = true;
     [SerializeField] int _enemiesInWave = 3;
@@ -45,16 +46,22 @@ public class SpawnManager : MonoBehaviour
 
         while (!_stopSpawning && _canSpawnNextWave)
         {
-            if(_numberOfRounds == 20)
+            if(_numberOfRounds == 10)
             {
-                SpawnBoss();
+                yield return new WaitForSeconds(2.0f);
                 break;
             }
             else if (_isDebugModeOn)
             {
+
                 yield return new WaitForSeconds(2.0f);
 
-                SpawnBoss();
+                Boss boss = Instantiate(_bossPrefab, new Vector3(0f, 12.6f, 0f), Quaternion.identity).GetComponent<Boss>();
+
+                yield return new WaitForSeconds(0.5f);
+
+                StartCoroutine(boss.EntranceRoutine());
+
                 break;
             }
 
@@ -106,7 +113,8 @@ public class SpawnManager : MonoBehaviour
             {
                 _increaseWaveLimitCounter = 0;
                 _enemiesInWave++;
-                _uiManager.ActivateWaveIncomingEffect();
+                _currentRound++;
+                _uiManager.ActivateNewRoundEffect(_currentRound);
                 yield return new WaitForSeconds(5f);
 
                 _pathID = 3; // path type for this specific enemy
@@ -115,10 +123,6 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    private void SpawnBoss()
-    {
-        Debug.Log("Spawned Boss");
-    }
 
     private void EnemySpawnPathSetup(GameObject enemyPrefab)
     {

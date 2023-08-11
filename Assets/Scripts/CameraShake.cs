@@ -11,6 +11,11 @@ public class CameraShake : MonoBehaviour
         StartCoroutine(ShakeCameraRoutine());
     }
 
+    public void ShakeCamera(int duration)
+    {
+        StartCoroutine(ShakeCameraDurationRoutine(duration));
+    }
+
     private IEnumerator ShakeCameraRoutine()
     {
         transform.rotation = Quaternion.Euler(_amountToShake);
@@ -21,5 +26,17 @@ public class CameraShake : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         transform.rotation = Quaternion.Euler(Vector3.zero);
 
+    }
+
+    private IEnumerator ShakeCameraDurationRoutine(int duration)
+    {
+        while(duration > 0)
+        {
+            duration--;
+
+            ShakeCamera();
+
+            yield return new WaitForSeconds(1f);
+        }
     }
 }

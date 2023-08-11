@@ -52,6 +52,8 @@ public class Player : MonoBehaviour
     private AudioSource _audioSource;
     private CameraShake _camShake;
     [SerializeField] private int _score = 0;
+    public bool IsLocked { get => _isLocked; set => _isLocked = value; }
+    private bool _isLocked;
 
     void Start()
     {
@@ -78,9 +80,12 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (IsLocked)
+            return;
+
         CalculateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire)
         {
             ShootLaser();
         }
@@ -109,6 +114,9 @@ public class Player : MonoBehaviour
 
     private void CalculateMovement()
     {
+        if (IsLocked)
+            return;
+
         // get directional input from player and convert it to a Vector3(horizontalInput, verticalInput, 0f)
         Func<float, float, Vector3> direction = (float horizontalInput, float verticalInput) => new Vector3(horizontalInput, verticalInput, 0f);
 
@@ -198,6 +206,9 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+        if (_isLocked)
+            return;
+
         if(_isShieldActive)
         {
             DamageShield();

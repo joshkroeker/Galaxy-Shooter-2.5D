@@ -7,12 +7,15 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private bool _isGameOver = false;
 
+    [SerializeField] private Player _player;
+
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.R) && _isGameOver)
         {
             _isGameOver = false;
+            _player.IsLocked = false;
             SceneManager.LoadScene("Game");
         }
 

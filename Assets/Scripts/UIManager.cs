@@ -17,19 +17,56 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameManager _gameManager;
     [SerializeField] private Slider _bossLeftCannonHPBar;
     [SerializeField] private Slider _bossRightCannonHPBar;
+    [SerializeField] private Slider _bossMainHPBar;
+    [SerializeField] private GameObject _winScreenObject;
 
-    //add a reference to the text object
-    [SerializeField] private Text _waveIncomingText;
+    [SerializeField] private Text _roundStartingText;
+
+    private Player _player;
 
     private void Start()
     {
         if (_gameManager == null) { _gameManager = FindObjectOfType<GameManager>(); }
+        if(_player == null) { _player = FindObjectOfType<Player>(); }
 
         _scoreText.text = "Score: 0";
         _gameOverTextObject.SetActive(false);
         _pressRTORestartObj.SetActive(false);
         _thrusterSlider.value = 100;
-        _waveIncomingText.gameObject.SetActive(false);
+        _roundStartingText.gameObject.SetActive(false);
+        _bossMainHPBar.value = 100;
+    }
+
+    public void ShowMainShipHP()
+    {
+        _bossMainHPBar.gameObject.SetActive(true);
+
+        if(_bossLeftCannonHPBar.IsActive() || _bossRightCannonHPBar.IsActive())
+        {
+            _bossRightCannonHPBar.gameObject.SetActive(false);
+            _bossLeftCannonHPBar.gameObject.SetActive(false);
+        }
+    }
+
+    public void ShowWinScreen()
+    {
+        _winScreenObject.SetActive(true);
+        StartCoroutine(StartFlickerEffectSpecificRoutine(_winScreenObject));
+
+        _pressRTORestartObj.SetActive(true);
+ 
+        LockPlayer();
+        _gameManager.GameOver();
+    }
+
+    private void LockPlayer()
+    {
+        _player.IsLocked = true;
+    }
+   
+    public void UpdateMainShipHP(int hp)
+    {
+        _bossMainHPBar.value = hp;
     }
 
     public void AddScoreToText(int playerScore)
@@ -54,6 +91,8 @@ public class UIManager : MonoBehaviour
         _gameOverTextObject.SetActive(true);
         StartCoroutine(StartFlickerEffectRoutine());
 
+        LockPlayer();
+
         _pressRTORestartObj.SetActive(true);
         _gameManager.GameOver();
     }
@@ -65,6 +104,16 @@ public class UIManager : MonoBehaviour
             _gameOverTextObject.SetActive(false);
             yield return new WaitForSeconds(_flickerDelay);
             _gameOverTextObject.SetActive(true);
+            yield return new WaitForSeconds(_flickerDelay);
+        }
+    }
+    private IEnumerator StartFlickerEffectSpecificRoutine(GameObject toFlicker)
+    {
+        while (true)
+        {
+            toFlicker.SetActive(false);
+            yield return new WaitForSeconds(_flickerDelay);
+            toFlicker.SetActive(true);
             yield return new WaitForSeconds(_flickerDelay);
         }
     }
@@ -83,9 +132,11 @@ public class UIManager : MonoBehaviour
         toFlicker.SetActive(false);
     }
 
-    public void ActivateWaveIncomingEffect()
+    public void ActivateNewRoundEffect(int currentRound)
     {
-        StartCoroutine(StartFlickerEffectRoutine(_waveIncomingText.gameObject, 5f));
+        _roundStartingText.text = "Round " + currentRound.ToString();
+
+        StartCoroutine(StartFlickerEffectRoutine(_roundStartingText.gameObject, 5f));
     }
 
     public void UpdateAmmo(int currentAmmo, int maxAmmo)
