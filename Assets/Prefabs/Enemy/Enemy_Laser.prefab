@@ -88,6 +88,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Laser_Right
       objectReference: {fileID: 0}
+    - target: {fileID: 6419649665011364140, guid: 382cba580b3477f44b0c3936f05480db, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 382cba580b3477f44b0c3936f05480db, type: 3}
 --- !u!4 &9082990013449834806 stripped
@@ -149,6 +153,10 @@ PrefabInstance:
     - target: {fileID: 6419610334192417808, guid: 382cba580b3477f44b0c3936f05480db, type: 3}
       propertyPath: m_Name
       value: Laser_Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419649665011364140, guid: 382cba580b3477f44b0c3936f05480db, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 382cba580b3477f44b0c3936f05480db, type: 3}

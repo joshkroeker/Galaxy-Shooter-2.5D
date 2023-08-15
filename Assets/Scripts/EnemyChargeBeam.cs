@@ -5,13 +5,15 @@ using UnityEngine;
 public class EnemyChargeBeam : Enemy
 {
     [Header("Charge Beam Enemy")]
-    [SerializeField] GameObject _chargeBeamPrefab;  
+    [SerializeField] GameObject _chargeBeamPrefab;
+    [SerializeField] GameObject _silhouettePrefab;
+    [SerializeField] private bool _turnOnSilhouette = true;
 
     protected override void Start()
     {
         base.Start();
-        StartCoroutine(CalculatePathing());
         _pointsToAdd = 50;
+        StartCoroutine(CalculatePathing());
     }
 
     private IEnumerator CalculatePathing()
@@ -21,10 +23,19 @@ public class EnemyChargeBeam : Enemy
             if (_moveIndex <= _path.Count - 1 && transform.position != _path[_moveIndex].position)
             {
                 transform.position = Vector2.MoveTowards(transform.position, _path[_moveIndex].position, _speed * Time.deltaTime);
+
+                if((_moveIndex == 1 || _moveIndex == 2) && _turnOnSilhouette)
+                {
+                    Debug.Log("Created a silhouette");
+                    GameObject silhouette = Instantiate(_silhouettePrefab, _path[_moveIndex + 1].position, Quaternion.identity);
+                    Destroy(silhouette, 5f);
+                    _turnOnSilhouette = false;
+                }
             }
             else if (_moveIndex <= _path.Count - 1 && transform.position == _path[_moveIndex].position)
             {
                 _moveIndex++;
+                _turnOnSilhouette = true;
 
                 if (_moveIndex > _path.Count - 1)
                 {
